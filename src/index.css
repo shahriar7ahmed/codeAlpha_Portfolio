@@ -1,14 +1,65 @@
 @import "tailwindcss";
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
 
 body {
   font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
 }
-h1, h2{
+
+@media (min-width: 768px) and (pointer: fine) {
+  body {
+    cursor: none;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
   font-family: 'Roboto', sans-serif;
 }
+
 @layer utilities {
   .gradient-bg {
     background: linear-gradient(-45deg, #302b63, #00bf8f, #1cd8d2);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
   }
+
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #00bf8f, #1cd8d2);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #1cd8d2, #00bf8f);
 }

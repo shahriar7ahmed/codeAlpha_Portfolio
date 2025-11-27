@@ -1,5 +1,4 @@
-import { canvas } from "framer-motion/client"
-import { use, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 
 
