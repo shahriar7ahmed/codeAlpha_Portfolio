@@ -116,8 +116,8 @@ const Experience = () => {
                     className="p-4 sm:p-5 md:p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-cyan-400/50 transition-all duration-300 shadow-lg"
                   >
                     <div className="flex items-center gap-2 text-cyan-400 mb-2 sm:mb-3">
-                      <FaBriefcase className="text-sm sm:text-base" />
-                      <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white">
+                      <FaBriefcase className="text-xs sm:text-sm md:text-base flex-shrink-0" />
+                      <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-white">
                         {exp.title}
                       </h3>
                     </div>

@@ -58,26 +58,26 @@ const Home = () => {
         >
           {/* Left Side - Text Content */}
           <div className="text-center md:text-left order-2 md:order-1">
-            <motion.div variants={itemVariants} className="mb-6">
-              <span className="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-cyan-400 text-sm font-semibold border border-cyan-400/30">
-                <HiCode className="inline mr-2" />
+            <motion.div variants={itemVariants} className="mb-4 sm:mb-6">
+              <span className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-cyan-400 text-xs sm:text-sm font-semibold border border-cyan-400/30">
+                <HiCode className="inline mr-1.5 sm:mr-2" />
                 Full Stack Developer
               </span>
             </motion.div>
 
             <motion.h1
               variants={itemVariants}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-cyan-400 via-green-400 to-cyan-400 bg-clip-text text-transparent leading-tight"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-3 sm:mb-4 md:mb-6 bg-gradient-to-r from-cyan-400 via-green-400 to-cyan-400 bg-clip-text text-transparent leading-tight"
             >
               Hi, I'm{' '}
-              <span className="block mt-2 bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">
+              <span className="block mt-1 sm:mt-2 bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">
                 Shahriar
               </span>
             </motion.h1>
 
             <motion.p
               variants={itemVariants}
-              className="text-lg sm:text-xl md:text-2xl text-white/80 mb-6 md:mb-8 leading-relaxed"
+              className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/80 mb-4 sm:mb-6 md:mb-8 leading-relaxed"
             >
               I build beautiful, functional, and user-friendly web applications
               that make a difference.
@@ -116,7 +116,7 @@ const Home = () => {
             {/* Social Links */}
             <motion.div
               variants={itemVariants}
-              className="flex gap-6 justify-center md:justify-start"
+              className="flex gap-4 sm:gap-6 justify-center md:justify-start"
             >
               {socialLinks.map((social, index) => (
                 <motion.a
@@ -126,7 +126,7 @@ const Home = () => {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.2, y: -5 }}
                   whileTap={{ scale: 0.9 }}
-                  className={`text-2xl text-white/70 ${social.color} transition-colors duration-300`}
+                  className={`text-xl sm:text-2xl text-white/70 ${social.color} transition-colors duration-300`}
                 >
                   <social.icon />
                 </motion.a>
@@ -152,7 +152,7 @@ const Home = () => {
             >
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-green-500 rounded-full blur-3xl opacity-30 animate-pulse -z-10 w-full h-full" />
               <motion.div
-                className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl"
+                className="relative w-40 h-40 xs:w-48 xs:h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden border-2 sm:border-4 border-white/20 shadow-2xl"
                 style={{
                   transform: typeof window !== 'undefined' && window.innerWidth >= 768
                     ? `perspective(1000px) rotateY(${

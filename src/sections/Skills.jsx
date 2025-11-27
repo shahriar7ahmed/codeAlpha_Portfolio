@@ -94,7 +94,7 @@ const Skills = () => {
         >
           {skillCategories.map((category, categoryIndex) => (
             <motion.div key={categoryIndex} variants={itemVariants}>
-              <h3 className="text-2xl font-bold text-white mb-6 text-center">
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6 text-center">
                 {category.title}
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
