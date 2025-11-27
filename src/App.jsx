@@ -38,7 +38,18 @@ export default function App() {
       <Suspense fallback={<SectionSkeleton className="min-h-screen py-20" />}>
         <Skills />
       </Suspense>
-      <Suspense fallback={<SectionSkeleton className="min-h-screen py-20" />}>
+      <Suspense fallback={
+        <section className="min-h-screen py-20 pt-24 md:pt-32">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <SectionSkeleton className="mb-16" />
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <ProjectCardSkeleton key={i} />
+              ))}
+            </div>
+          </div>
+        </section>
+      }>
         <Projects />
       </Suspense>
       <Suspense fallback={<SectionSkeleton className="min-h-screen py-20" />}>
