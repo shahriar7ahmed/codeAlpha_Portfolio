@@ -9,11 +9,28 @@ const Home = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
+    // Throttle mouse updates with requestAnimationFrame for better performance
+    let rafId = null;
+    
     const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      if (rafId) return; // Skip if already scheduled
+      
+      rafId = requestAnimationFrame(() => {
+        setMousePosition({ x: e.clientX, y: e.clientY });
+        rafId = null;
+      });
     };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+
+    // Only add listener on desktop devices with fine pointer
+    const isDesktop = window.matchMedia('(min-width: 768px) and (pointer: fine)').matches;
+    if (!isDesktop) return;
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, []);
 
   const socialLinks = [
