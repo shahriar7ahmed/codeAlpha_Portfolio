@@ -94,17 +94,20 @@ const Navbar = () => {
           ? 'bg-black/80 backdrop-blur-md shadow-lg'
           : 'bg-transparent'
       }`}
+      role="navigation"
+      aria-label="Main navigation"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <motion.div
+          <motion.button
             whileHover={{ scale: 1.05 }}
-            className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent cursor-pointer relative z-10"
+            className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent cursor-pointer relative z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#302b63] rounded"
             onClick={() => scrollToSection('#home')}
+            aria-label="Navigate to home section"
           >
             Shahriar
-          </motion.div>
+          </motion.button>
 
           {/* Desktop Menu */}
           <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
@@ -120,13 +123,16 @@ const Navbar = () => {
                   onClick={() => scrollToSection(item.href)}
                   className={`${
                     isActive ? 'text-cyan-400' : 'text-white/90'
-                  } hover:text-cyan-400 transition-colors duration-300 font-medium text-sm lg:text-base px-2 py-1 relative group`}
+                  } hover:text-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#302b63] rounded transition-colors duration-300 font-medium text-sm lg:text-base px-2 py-1 relative group`}
+                  aria-current={isActive ? 'page' : undefined}
+                  aria-label={`Navigate to ${item.name} section`}
                 >
                   {item.name}
                   <span
                     className={`absolute bottom-0 left-0 h-0.5 bg-cyan-400 transition-all duration-300 ${
                       isActive ? 'w-full' : 'w-0 group-hover:w-full'
                     }`}
+                    aria-hidden="true"
                   />
                 </motion.button>
               );
@@ -135,9 +141,11 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white text-2xl relative z-10 transition-colors hover:text-cyan-400"
+            className="md:hidden text-white text-2xl relative z-10 transition-colors hover:text-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#302b63] rounded p-2"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle menu"
+            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
           >
             {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
           </button>
@@ -146,6 +154,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <motion.div
+        id="mobile-menu"
         initial={false}
         animate={{
           height: isMobileMenuOpen ? 'auto' : 0,
@@ -153,6 +162,8 @@ const Navbar = () => {
         }}
         transition={{ duration: 0.3 }}
         className="md:hidden overflow-hidden bg-black/95 backdrop-blur-md border-t border-white/10 relative z-[99]"
+        role="menu"
+        aria-hidden={!isMobileMenuOpen}
       >
         <div className="px-4 py-6 space-y-3">
           {navItems.map((item) => {
@@ -161,9 +172,11 @@ const Navbar = () => {
               <button
                 key={item.name}
                 onClick={() => scrollToSection(item.href)}
-                className={`block w-full text-left transition-colors py-3 text-lg font-medium border-b border-white/5 last:border-0 ${
+                className={`block w-full text-left transition-colors py-3 text-lg font-medium border-b border-white/5 last:border-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded ${
                   isActive ? 'text-cyan-400' : 'text-white/90 hover:text-cyan-400'
                 }`}
+                role="menuitem"
+                aria-current={isActive ? 'page' : undefined}
               >
                 {item.name}
               </button>

@@ -66,7 +66,7 @@ const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="relative min-h-screen flex items-center py-20 pt-32">
+    <section id="contact" className="relative min-h-screen flex items-center py-16 md:py-20 pt-24 md:pt-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -84,7 +84,7 @@ const Contact = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12">
           {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -135,7 +135,7 @@ const Contact = () => {
                 htmlFor="name"
                 className="block text-white font-semibold mb-2"
               >
-                Name
+                Name <span className="text-red-400" aria-label="required">*</span>
               </label>
               <input
                 type="text"
@@ -144,7 +144,9 @@ const Contact = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 focus:border-cyan-400 focus:outline-none text-white placeholder-white/50 transition-all duration-300"
+                aria-required="true"
+                aria-invalid={submitStatus === 'error' && !formData.name}
+                className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 focus:border-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#302b63] text-white placeholder-white/50 transition-all duration-300"
                 placeholder="Your Name"
               />
             </div>
@@ -154,7 +156,7 @@ const Contact = () => {
                 htmlFor="email"
                 className="block text-white font-semibold mb-2"
               >
-                Email
+                Email <span className="text-red-400" aria-label="required">*</span>
               </label>
               <input
                 type="email"
@@ -163,7 +165,9 @@ const Contact = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 focus:border-cyan-400 focus:outline-none text-white placeholder-white/50 transition-all duration-300"
+                aria-required="true"
+                aria-invalid={submitStatus === 'error' && !formData.email}
+                className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 focus:border-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#302b63] text-white placeholder-white/50 transition-all duration-300"
                 placeholder="your.email@example.com"
               />
             </div>
@@ -173,7 +177,7 @@ const Contact = () => {
                 htmlFor="message"
                 className="block text-white font-semibold mb-2"
               >
-                Message
+                Message <span className="text-red-400" aria-label="required">*</span>
               </label>
               <textarea
                 id="message"
@@ -181,8 +185,10 @@ const Contact = () => {
                 value={formData.message}
                 onChange={handleChange}
                 required
+                aria-required="true"
+                aria-invalid={submitStatus === 'error' && !formData.message}
                 rows="6"
-                className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 focus:border-cyan-400 focus:outline-none text-white placeholder-white/50 transition-all duration-300 resize-none"
+                className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 focus:border-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#302b63] text-white placeholder-white/50 transition-all duration-300 resize-none"
                 placeholder="Your Message"
               />
             </div>
@@ -192,7 +198,8 @@ const Contact = () => {
               disabled={isSubmitting}
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              className="w-full px-8 py-4 bg-gradient-to-r from-cyan-500 to-green-500 rounded-full font-semibold text-white shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-8 py-4 bg-gradient-to-r from-cyan-500 to-green-500 rounded-full font-semibold text-white shadow-lg hover:shadow-cyan-500/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#302b63] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-label={isSubmitting ? 'Sending message...' : 'Submit contact form'}
             >
               {isSubmitting ? (
                 'Sending...'
@@ -205,23 +212,27 @@ const Contact = () => {
             </motion.button>
 
             {submitStatus === 'success' && (
-              <motion.p
+              <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="text-green-400 text-center"
+                role="alert"
+                aria-live="polite"
               >
                 Message sent successfully!
-              </motion.p>
+              </motion.div>
             )}
 
             {submitStatus === 'error' && (
-              <motion.p
+              <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="text-red-400 text-center"
+                role="alert"
+                aria-live="assertive"
               >
                 Failed to send message. Please try again.
-              </motion.p>
+              </motion.div>
             )}
           </motion.form>
         </div>
