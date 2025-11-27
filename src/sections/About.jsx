@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FaCode, FaLaptopCode, FaRocket, FaHeart } from 'react-icons/fa';
 import avator from '../assets/avator.png';
+import ImageOptimized from '../components/ImageOptimized';
 
 const About = () => {
   const features = [
@@ -51,7 +52,7 @@ const About = () => {
   return (
     <section
       id="about"
-      className="relative min-h-screen flex items-center py-20 pt-32"
+      className="relative min-h-screen flex items-center py-16 md:py-20 pt-24 md:pt-32"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -74,17 +75,21 @@ const About = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative flex justify-center md:justify-start"
+            className="relative flex justify-center md:justify-start order-2 md:order-1"
           >
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-green-500 rounded-2xl blur-2xl opacity-30 transform rotate-6" />
-              <motion.img
-                src={avator}
-                alt="About"
-                className="relative rounded-2xl shadow-2xl border-4 border-white/20"
+            <div className="relative w-full max-w-md">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-green-500 rounded-2xl blur-2xl opacity-30 transform rotate-6 -z-10" />
+              <motion.div
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.3 }}
-              />
+              >
+                <ImageOptimized
+                  src={avator}
+                  alt="About Shahriar - Full Stack Developer"
+                  className="relative rounded-2xl shadow-2xl border-4 border-white/20 w-full h-auto"
+                  eager={false}
+                />
+              </motion.div>
             </div>
           </motion.div>
 
@@ -94,7 +99,7 @@ const About = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="space-y-6"
+            className="space-y-6 order-1 md:order-2"
           >
             <motion.p
               variants={itemVariants}
@@ -117,19 +122,19 @@ const About = () => {
             {/* Features Grid */}
             <motion.div
               variants={itemVariants}
-              className="grid grid-cols-2 gap-4 mt-8"
+              className="grid grid-cols-2 gap-3 sm:gap-4 mt-8"
             >
               {features.map((feature, index) => (
                 <motion.div
                   key={index}
                   whileHover={{ scale: 1.05, y: -5 }}
-                  className="p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-cyan-400/50 transition-all duration-300"
+                  className="p-4 sm:p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-cyan-400/50 transition-all duration-300"
                 >
-                  <feature.icon className="text-3xl text-cyan-400 mb-3" />
-                  <h3 className="text-xl font-semibold text-white mb-2">
+                  <feature.icon className="text-2xl sm:text-3xl text-cyan-400 mb-2 sm:mb-3" />
+                  <h3 className="text-base sm:text-xl font-semibold text-white mb-1 sm:mb-2">
                     {feature.title}
                   </h3>
-                  <p className="text-white/70 text-sm">
+                  <p className="text-white/70 text-xs sm:text-sm">
                     {feature.description}
                   </p>
                 </motion.div>

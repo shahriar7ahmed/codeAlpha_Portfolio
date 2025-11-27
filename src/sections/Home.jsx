@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaDownload } from 'react-icons/fa';
 import { HiCode } from 'react-icons/hi';
 import myimg from '../assets/myimg.jpeg';
+import ImageOptimized from '../components/ImageOptimized';
 
 const Home = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -47,14 +48,14 @@ const Home = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 min-h-[calc(100vh-5rem)] flex items-center w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 w-full">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid md:grid-cols-2 gap-12 items-center"
+          className="grid md:grid-cols-2 gap-8 md:gap-12 items-center w-full"
         >
           {/* Left Side - Text Content */}
           <div className="text-center md:text-left">
@@ -67,7 +68,7 @@ const Home = () => {
 
             <motion.h1
               variants={itemVariants}
-              className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-green-400 to-cyan-400 bg-clip-text text-transparent"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-cyan-400 via-green-400 to-cyan-400 bg-clip-text text-transparent leading-tight"
             >
               Hi, I'm{' '}
               <span className="block mt-2 bg-gradient-to-r from-white to-cyan-200 bg-clip-text text-transparent">
@@ -77,7 +78,7 @@ const Home = () => {
 
             <motion.p
               variants={itemVariants}
-              className="text-xl md:text-2xl text-white/80 mb-8 leading-relaxed"
+              className="text-lg sm:text-xl md:text-2xl text-white/80 mb-6 md:mb-8 leading-relaxed"
             >
               I build beautiful, functional, and user-friendly web applications
               that make a difference.
@@ -85,7 +86,7 @@ const Home = () => {
 
             <motion.div
               variants={itemVariants}
-              className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mb-8"
+              className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mb-6 md:mb-8"
             >
               <motion.a
                 href="#contact"
@@ -98,7 +99,7 @@ const Home = () => {
                 }}
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-green-500 rounded-full font-semibold text-white shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 text-center"
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-cyan-500 to-green-500 rounded-full font-semibold text-white shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 text-center text-sm sm:text-base"
               >
                 Get In Touch
               </motion.a>
@@ -106,7 +107,7 @@ const Home = () => {
                 href="#"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-white/10 backdrop-blur-sm rounded-full font-semibold text-white border border-white/30 hover:bg-white/20 transition-all duration-300 flex items-center justify-center gap-2"
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-white/10 backdrop-blur-sm rounded-full font-semibold text-white border border-white/30 hover:bg-white/20 transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base"
               >
                 <FaDownload />
                 Download CV
@@ -137,7 +138,7 @@ const Home = () => {
           {/* Right Side - Image */}
           <motion.div
             variants={itemVariants}
-            className="relative flex justify-center md:justify-end"
+            className="relative flex justify-center md:justify-end order-first md:order-last"
           >
             <motion.div
               className="relative"
@@ -150,9 +151,9 @@ const Home = () => {
                 ease: 'easeInOut',
               }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-green-500 rounded-full blur-3xl opacity-30 animate-pulse" />
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-green-500 rounded-full blur-3xl opacity-30 animate-pulse -z-10" />
               <motion.div
-                className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl"
+                className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl"
                 style={{
                   transform: typeof window !== 'undefined' 
                     ? `perspective(1000px) rotateY(${
@@ -163,10 +164,11 @@ const Home = () => {
                     : 'none',
                 }}
               >
-                <img
+                <ImageOptimized
                   src={myimg}
-                  alt="Shahriar"
+                  alt="Shahriar - Full Stack Developer"
                   className="w-full h-full object-cover"
+                  eager={true}
                 />
               </motion.div>
             </motion.div>

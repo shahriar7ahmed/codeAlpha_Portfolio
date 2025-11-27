@@ -8,6 +8,7 @@ import m1 from '../assets/m1.PNG';
 import m2 from '../assets/m2.PNG';
 import w1 from '../assets/w1.PNG';
 import w2 from '../assets/w2.PNG';
+import ImageOptimized from '../components/ImageOptimized';
 
 const Projects = () => {
   const projects = [
@@ -89,7 +90,7 @@ const Projects = () => {
   };
 
   return (
-    <section id="projects" className="relative min-h-screen flex items-center py-20 pt-32">
+    <section id="projects" className="relative min-h-screen flex items-center py-16 md:py-20 pt-24 md:pt-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -109,7 +110,7 @@ const Projects = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
         >
           {projects.map((project, index) => (
             <motion.div
@@ -120,13 +121,18 @@ const Projects = () => {
             >
               {/* Image */}
               <div className="relative h-48 overflow-hidden">
-                <motion.img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover"
+                <motion.div
                   whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.3 }}
-                />
+                  className="w-full h-full"
+                >
+                  <ImageOptimized
+                    src={project.image}
+                    alt={`${project.title} - Project Screenshot`}
+                    className="w-full h-full object-cover"
+                    eager={false}
+                  />
+                </motion.div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="absolute bottom-4 left-4 right-4 flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <motion.a
