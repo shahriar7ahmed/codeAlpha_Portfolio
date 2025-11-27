@@ -1,0 +1,54 @@
+{
+  "timestamp": "2024-01-XX",
+  "buildOutput": {
+    "html": {
+      "size": "0.72 kB",
+      "gzip": "0.40 kB"
+    },
+    "css": {
+      "size": "41.96 kB",
+      "gzip": "6.86 kB"
+    },
+    "js": {
+      "size": "383.78 kB",
+      "gzip": "124.10 kB"
+    },
+    "images": {
+      "myimg.jpeg": "91.46 kB",
+      "img1.JPG": "107.04 kB",
+      "img2.JPG": "110.00 kB",
+      "img3.JPG": "252.69 kB",
+      "m1.PNG": "117.14 kB",
+      "m2.PNG": "476.04 kB",
+      "w1.PNG": "296.82 kB",
+      "w2.PNG": "401.64 kB",
+      "avator.png": "1,704.81 kB",
+      "total": "3,564.64 kB"
+    }
+  },
+  "issues": [
+    {
+      "severity": "critical",
+      "issue": "avator.png is 1.7MB - needs immediate optimization",
+      "impact": "Significant page load time, especially on mobile"
+    },
+    {
+      "severity": "high",
+      "issue": "Multiple large PNG/JPG images (100-400KB each)",
+      "impact": "Total image size is 3.5MB - should be < 500KB total"
+    },
+    {
+      "severity": "medium",
+      "issue": "JS bundle is 383KB (124KB gzipped) - could benefit from code splitting",
+      "impact": "Initial load time could be improved"
+    }
+  ],
+  "recommendations": [
+    "Convert all images to WebP/AVIF format",
+    "Implement responsive images with srcset",
+    "Lazy load images below the fold",
+    "Code split sections below the fold",
+    "Optimize particle background (lazy load or disable on low-end devices)"
+  ]
+}
+
