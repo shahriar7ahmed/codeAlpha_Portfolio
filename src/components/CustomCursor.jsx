@@ -1,30 +1,65 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
+const CURSOR_STORAGE_KEY = 'cursor-enabled';
+
 const CustomCursor = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(false);
 
   useEffect(() => {
-    // Only show custom cursor on desktop
-    const checkDesktop = () => {
-      setIsDesktop(window.matchMedia('(min-width: 768px)').matches && window.matchMedia('(pointer: fine)').matches);
+    // Check if custom cursor should be enabled
+    const checkEnabled = () => {
+      // Check user preference from localStorage
+      const storedPreference = localStorage.getItem(CURSOR_STORAGE_KEY);
+      if (storedPreference !== null) {
+        setIsEnabled(storedPreference === 'true');
+        return;
+      }
+
+      // Default: only enable on large screens (>1024px) with pointer capability
+      const isLargeScreen = window.matchMedia('(min-width: 1024px)').matches;
+      const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const shouldEnable = isLargeScreen && hasFinePointer && !prefersReducedMotion;
+      setIsEnabled(shouldEnable);
+      
+      // Store default preference
+      if (shouldEnable) {
+        localStorage.setItem(CURSOR_STORAGE_KEY, 'true');
+      }
     };
     
-    checkDesktop();
-    window.addEventListener('resize', checkDesktop);
+    checkEnabled();
+    const mediaQuery = window.matchMedia('(min-width: 1024px)');
+    const handleResize = () => checkEnabled();
+    mediaQuery.addEventListener('change', handleResize);
+    window.addEventListener('resize', handleResize);
 
-    if (!isDesktop) return;
+    return () => {
+      mediaQuery.removeEventListener('change', handleResize);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
-    const updateMousePosition = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+  useEffect(() => {
+    if (!isEnabled) return;
+
+    // Throttle mouse updates for performance
+    let rafId: number;
+    const updateMousePosition = (e: MouseEvent) => {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        setMousePosition({ x: e.clientX, y: e.clientY });
+      });
     };
 
     const handleMouseEnter = () => setIsHovering(true);
     const handleMouseLeave = () => setIsHovering(false);
 
-    window.addEventListener('mousemove', updateMousePosition);
+    window.addEventListener('mousemove', updateMousePosition, { passive: true });
 
     const interactiveElements = document.querySelectorAll('a, button, [role="button"]');
     interactiveElements.forEach((el) => {
@@ -33,16 +68,16 @@ const CustomCursor = () => {
     });
 
     return () => {
-      window.removeEventListener('resize', checkDesktop);
+      if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener('mousemove', updateMousePosition);
       interactiveElements.forEach((el) => {
         el.removeEventListener('mouseenter', handleMouseEnter);
         el.removeEventListener('mouseleave', handleMouseLeave);
       });
     };
-  }, [isDesktop]);
+  }, [isEnabled]);
 
-  if (!isDesktop) return null;
+  if (!isEnabled) return null;
 
   return (
     <>
