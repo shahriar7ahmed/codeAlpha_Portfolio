@@ -1,21 +1,16 @@
-import { useState, lazy, Suspense } from "react";
+import { useState } from "react";
 import Navbar from "./components/Navbar";
 import Home from "./sections/Home";
+import About from "./sections/About";
+import Experience from "./sections/Experience";
+import Skills from "./sections/Skills";
+import Projects from "./sections/Projects";
+import Testimonials from "./sections/Testimonials";
+import Contact from "./sections/Contact";
+import Footer from "./sections/Footer";
+import ParticlesBackground from "./components/ParticlesBackground";
 import CustomCursor from "./components/CustomCursor";
 import IntroAnimation from "./components/IntroAnimation";
-import SectionSkeleton from "./components/SectionSkeleton";
-
-// Lazy load particles background for better initial load
-const ParticlesBackground = lazy(() => import("./components/ParticlesBackground"));
-
-// Lazy load sections below the fold to reduce initial bundle size
-const About = lazy(() => import("./sections/About"));
-const Experience = lazy(() => import("./sections/Experience"));
-const Skills = lazy(() => import("./sections/Skills"));
-const Projects = lazy(() => import("./sections/Projects"));
-const Testimonials = lazy(() => import("./sections/Testimonials"));
-const Contact = lazy(() => import("./sections/Contact"));
-const Footer = lazy(() => import("./sections/Footer"));
 
 export default function App() {
   const [showIntro, setShowIntro] = useState(true);
@@ -24,43 +19,16 @@ export default function App() {
     <div className="relative gradient-bg text-white min-h-screen">
       {showIntro && <IntroAnimation onComplete={() => setShowIntro(false)} />}
       <CustomCursor />
-      <Suspense fallback={<div className="fixed top-0 left-0 w-full h-full pointer-events-none z-0 bg-gradient-to-br from-[#302b63]/20 via-[#00bf8f]/10 to-[#1cd8d2]/20" />}>
-        <ParticlesBackground />
-      </Suspense>
+      <ParticlesBackground />
       <Navbar />
       <Home />
-      <Suspense fallback={<SectionSkeleton className="min-h-screen py-20" />}>
-        <About />
-      </Suspense>
-      <Suspense fallback={<SectionSkeleton className="min-h-screen py-20" />}>
-        <Experience />
-      </Suspense>
-      <Suspense fallback={<SectionSkeleton className="min-h-screen py-20" />}>
-        <Skills />
-      </Suspense>
-      <Suspense fallback={
-        <section className="min-h-screen py-20 pt-24 md:pt-32">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionSkeleton className="mb-16" />
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <ProjectCardSkeleton key={i} />
-              ))}
-            </div>
-          </div>
-        </section>
-      }>
-        <Projects />
-      </Suspense>
-      <Suspense fallback={<SectionSkeleton className="min-h-screen py-20" />}>
-        <Testimonials />
-      </Suspense>
-      <Suspense fallback={<SectionSkeleton className="min-h-screen py-20" />}>
-        <Contact />
-      </Suspense>
-      <Suspense fallback={<div className="h-32" />}>
-        <Footer />
-      </Suspense>
+      <About />
+      <Experience />
+      <Skills />
+      <Projects />
+      <Testimonials />
+      <Contact />
+      <Footer />
     </div>
   );
 }

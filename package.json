@@ -6,10 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:analyze": "vite build --mode analyze",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "lighthouse": "lighthouse http://localhost:5173 --view --output html --output-path ./diagnostics/lighthouse-report.html"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

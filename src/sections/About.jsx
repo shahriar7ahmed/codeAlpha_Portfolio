@@ -2,7 +2,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FaCode, FaLaptopCode, FaRocket, FaHeart } from 'react-icons/fa';
 import avator from '../assets/avator.png';
-import ImageOptimized from '../components/ImageOptimized';
 
 const About = () => {
   const features = [
@@ -62,13 +61,13 @@ const About = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent">
             About Me
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-green-400 mx-auto rounded-full" />
+          <div className="w-20 sm:w-24 h-1 bg-gradient-to-r from-cyan-400 to-green-400 mx-auto rounded-full" />
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center">
           {/* Left Side - Image */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -77,19 +76,15 @@ const About = () => {
             transition={{ duration: 0.6 }}
             className="relative flex justify-center md:justify-start order-2 md:order-1"
           >
-            <div className="relative w-full max-w-md">
+            <div className="relative w-full max-w-sm md:max-w-md">
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-green-500 rounded-2xl blur-2xl opacity-30 transform rotate-6 -z-10" />
-              <motion.div
+              <motion.img
+                src={avator}
+                alt="About Shahriar"
+                className="relative rounded-2xl shadow-2xl border-4 border-white/20 w-full h-auto"
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.3 }}
-              >
-                <ImageOptimized
-                  src={avator}
-                  alt="About Shahriar - Full Stack Developer"
-                  className="relative rounded-2xl shadow-2xl border-4 border-white/20 w-full h-auto"
-                  eager={false}
-                />
-              </motion.div>
+              />
             </div>
           </motion.div>
 
@@ -99,11 +94,11 @@ const About = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="space-y-6 order-1 md:order-2"
+            className="space-y-4 sm:space-y-6 order-1 md:order-2"
           >
             <motion.p
               variants={itemVariants}
-              className="text-lg md:text-xl text-white/80 leading-relaxed"
+              className="text-base sm:text-lg md:text-xl text-white/80 leading-relaxed"
             >
               I'm a passionate Full Stack Developer with a love for creating
               innovative web solutions. With expertise in modern technologies,
@@ -111,7 +106,7 @@ const About = () => {
             </motion.p>
             <motion.p
               variants={itemVariants}
-              className="text-lg md:text-xl text-white/80 leading-relaxed"
+              className="text-base sm:text-lg md:text-xl text-white/80 leading-relaxed"
             >
               My journey in web development started with curiosity and has
               evolved into a career where I continuously learn and adapt to new

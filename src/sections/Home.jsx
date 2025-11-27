@@ -3,34 +3,16 @@ import { motion } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaDownload } from 'react-icons/fa';
 import { HiCode } from 'react-icons/hi';
 import myimg from '../assets/myimg.jpeg';
-import ImageOptimized from '../components/ImageOptimized';
 
 const Home = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    // Throttle mouse updates with requestAnimationFrame for better performance
-    let rafId = null;
-    
     const handleMouseMove = (e) => {
-      if (rafId) return; // Skip if already scheduled
-      
-      rafId = requestAnimationFrame(() => {
-        setMousePosition({ x: e.clientX, y: e.clientY });
-        rafId = null;
-      });
+      setMousePosition({ x: e.clientX, y: e.clientY });
     };
-
-    // Only add listener on desktop devices with fine pointer
-    const isDesktop = window.matchMedia('(min-width: 768px) and (pointer: fine)').matches;
-    if (!isDesktop) return;
-
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    
-    return () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   const socialLinks = [
@@ -65,17 +47,17 @@ const Home = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-20"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 lg:py-20 w-full">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid md:grid-cols-2 gap-8 md:gap-12 items-center w-full"
+          className="grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 items-center w-full"
         >
           {/* Left Side - Text Content */}
-          <div className="text-center md:text-left">
+          <div className="text-center md:text-left order-2 md:order-1">
             <motion.div variants={itemVariants} className="mb-6">
               <span className="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-cyan-400 text-sm font-semibold border border-cyan-400/30">
                 <HiCode className="inline mr-2" />
@@ -155,7 +137,7 @@ const Home = () => {
           {/* Right Side - Image */}
           <motion.div
             variants={itemVariants}
-            className="relative flex justify-center md:justify-end order-first md:order-last"
+            className="relative flex justify-center md:justify-end order-1 md:order-2 mb-6 md:mb-0"
           >
             <motion.div
               className="relative"
@@ -168,11 +150,11 @@ const Home = () => {
                 ease: 'easeInOut',
               }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-green-500 rounded-full blur-3xl opacity-30 animate-pulse -z-10" />
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-green-500 rounded-full blur-3xl opacity-30 animate-pulse -z-10 w-full h-full" />
               <motion.div
-                className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl"
+                className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl"
                 style={{
-                  transform: typeof window !== 'undefined' 
+                  transform: typeof window !== 'undefined' && window.innerWidth >= 768
                     ? `perspective(1000px) rotateY(${
                         (mousePosition.x - window.innerWidth / 2) / 50
                       }deg) rotateX(${
@@ -181,11 +163,10 @@ const Home = () => {
                     : 'none',
                 }}
               >
-                <ImageOptimized
+                <img
                   src={myimg}
-                  alt="Shahriar - Full Stack Developer"
+                  alt="Shahriar"
                   className="w-full h-full object-cover"
-                  eager={true}
                 />
               </motion.div>
             </motion.div>

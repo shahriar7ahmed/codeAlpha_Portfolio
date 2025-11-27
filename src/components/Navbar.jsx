@@ -7,63 +7,29 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
-  // Use IntersectionObserver for active section detection (more performant)
   useEffect(() => {
-    const sections = ['home', 'about', 'experience', 'skills', 'projects', 'contact'];
-    const sectionElements = sections
-      .map(id => document.getElementById(id))
-      .filter(Boolean);
-
-    if (sectionElements.length === 0) return;
-
-    // Use IntersectionObserver with rootMargin for better detection
-    const observerOptions = {
-      root: null,
-      rootMargin: '-20% 0px -40% 0px', // Trigger when section is in upper 40% of viewport
-      threshold: 0,
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          if (sections.includes(id)) {
-            setActiveSection(id);
-          }
-        }
-      });
-    }, observerOptions);
-
-    sectionElements.forEach((el) => observer.observe(el));
-
-    return () => {
-      sectionElements.forEach((el) => observer.unobserve(el));
-    };
-  }, []);
-
-  // Separate effect for scroll-based navbar background and mobile menu
-  useEffect(() => {
-    let ticking = false;
-
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 50);
-          
-          // Close mobile menu on scroll
-          if (isMobileMenuOpen) {
-            setIsMobileMenuOpen(false);
-          }
-          
-          ticking = false;
-        });
-        ticking = true;
+      setIsScrolled(window.scrollY > 50);
+      
+      // Close mobile menu on scroll
+      if (isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
       }
+      
+      // Update active section based on scroll position
+      const sections = ['home', 'about', 'experience', 'skills', 'projects', 'contact'];
+      const current = sections.find(section => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
+        }
+        return false;
+      });
+      if (current) setActiveSection(current);
     };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll);
     handleScroll(); // Initial check
-    
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isMobileMenuOpen]);
 
@@ -94,23 +60,20 @@ const Navbar = () => {
           ? 'bg-black/80 backdrop-blur-md shadow-lg'
           : 'bg-transparent'
       }`}
-      role="navigation"
-      aria-label="Main navigation"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <motion.button
             whileHover={{ scale: 1.05 }}
-            className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent cursor-pointer relative z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#302b63] rounded"
             onClick={() => scrollToSection('#home')}
-            aria-label="Navigate to home section"
+            className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent cursor-pointer relative z-10 focus:outline-none"
           >
             Shahriar
           </motion.button>
 
           {/* Desktop Menu */}
-          <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
+          <nav className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-8">
             {navItems.map((item, index) => {
               const isActive = activeSection === item.href.substring(1);
               return (
@@ -123,16 +86,13 @@ const Navbar = () => {
                   onClick={() => scrollToSection(item.href)}
                   className={`${
                     isActive ? 'text-cyan-400' : 'text-white/90'
-                  } hover:text-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#302b63] rounded transition-colors duration-300 font-medium text-sm lg:text-base px-2 py-1 relative group`}
-                  aria-current={isActive ? 'page' : undefined}
-                  aria-label={`Navigate to ${item.name} section`}
+                  } hover:text-cyan-400 transition-colors duration-300 font-medium text-sm lg:text-base px-2 py-1 relative group focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-transparent rounded`}
                 >
                   {item.name}
                   <span
                     className={`absolute bottom-0 left-0 h-0.5 bg-cyan-400 transition-all duration-300 ${
                       isActive ? 'w-full' : 'w-0 group-hover:w-full'
                     }`}
-                    aria-hidden="true"
                   />
                 </motion.button>
               );
@@ -141,11 +101,10 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white text-2xl relative z-10 transition-colors hover:text-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#302b63] rounded p-2"
+            className="md:hidden text-white text-xl sm:text-2xl relative z-10 transition-colors hover:text-cyan-400 p-2 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-transparent rounded"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-label="Toggle menu"
             aria-expanded={isMobileMenuOpen}
-            aria-controls="mobile-menu"
           >
             {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
           </button>
@@ -154,7 +113,6 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <motion.div
-        id="mobile-menu"
         initial={false}
         animate={{
           height: isMobileMenuOpen ? 'auto' : 0,
@@ -162,21 +120,17 @@ const Navbar = () => {
         }}
         transition={{ duration: 0.3 }}
         className="md:hidden overflow-hidden bg-black/95 backdrop-blur-md border-t border-white/10 relative z-[99]"
-        role="menu"
-        aria-hidden={!isMobileMenuOpen}
       >
-        <div className="px-4 py-6 space-y-3">
+        <div className="px-4 py-4 space-y-2">
           {navItems.map((item) => {
             const isActive = activeSection === item.href.substring(1);
             return (
               <button
                 key={item.name}
                 onClick={() => scrollToSection(item.href)}
-                className={`block w-full text-left transition-colors py-3 text-lg font-medium border-b border-white/5 last:border-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded ${
+                className={`block w-full text-left transition-colors py-2.5 text-base font-medium border-b border-white/5 last:border-0 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-inset rounded ${
                   isActive ? 'text-cyan-400' : 'text-white/90 hover:text-cyan-400'
                 }`}
-                role="menuitem"
-                aria-current={isActive ? 'page' : undefined}
               >
                 {item.name}
               </button>

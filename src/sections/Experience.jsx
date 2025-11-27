@@ -66,7 +66,7 @@ const Experience = () => {
   return (
     <section
       id="experience"
-      className="relative min-h-screen flex items-center py-20 pt-32"
+      className="relative min-h-screen flex items-center py-16 md:py-20 pt-24 md:pt-32"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -76,10 +76,10 @@ const Experience = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent">
             Experience
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-green-400 mx-auto rounded-full" />
+          <div className="w-20 sm:w-24 h-1 bg-gradient-to-r from-cyan-400 to-green-400 mx-auto rounded-full" />
         </motion.div>
 
         <motion.div
@@ -90,10 +90,10 @@ const Experience = () => {
           className="relative"
         >
           {/* Timeline Line */}
-          <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-cyan-400 to-green-400 transform md:-translate-x-1/2 hidden md:block" />
-          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-cyan-400 to-green-400 md:hidden" />
+          <div className="absolute left-6 sm:left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-cyan-400 to-green-400 transform md:-translate-x-1/2 hidden md:block" />
+          <div className="absolute left-6 sm:left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-cyan-400 to-green-400 md:hidden" />
 
-          <div className="space-y-12 md:space-y-16">
+          <div className="space-y-8 sm:space-y-12 md:space-y-16">
             {experiences.map((exp, index) => (
               <motion.div
                 key={index}
@@ -103,25 +103,25 @@ const Experience = () => {
                 }`}
               >
                 {/* Timeline Dot */}
-                <div className="absolute left-8 md:left-1/2 w-4 h-4 bg-cyan-400 rounded-full border-4 border-[#302b63] transform md:-translate-x-1/2 z-10 shadow-lg shadow-cyan-400/50" />
+                <div className="absolute left-6 sm:left-8 md:left-1/2 w-3 h-3 sm:w-4 sm:h-4 bg-cyan-400 rounded-full border-3 sm:border-4 border-[#302b63] transform md:-translate-x-1/2 z-10 shadow-lg shadow-cyan-400/50" />
 
                 {/* Content Card */}
                 <div
-                  className={`w-full md:w-5/12 ml-14 sm:ml-16 md:ml-0 ${
+                  className={`w-full md:w-5/12 ml-8 sm:ml-10 md:ml-0 ${
                     index % 2 === 0 ? 'md:mr-auto md:pr-8' : 'md:ml-auto md:pl-8'
                   }`}
                 >
                   <motion.div
                     whileHover={{ scale: 1.02, y: -5 }}
-                    className="p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-cyan-400/50 transition-all duration-300 shadow-lg"
+                    className="p-4 sm:p-5 md:p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-cyan-400/50 transition-all duration-300 shadow-lg"
                   >
-                    <div className="flex items-center gap-2 text-cyan-400 mb-2">
-                      <FaBriefcase />
-                      <h3 className="text-2xl font-bold text-white">
+                    <div className="flex items-center gap-2 text-cyan-400 mb-2 sm:mb-3">
+                      <FaBriefcase className="text-sm sm:text-base" />
+                      <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white">
                         {exp.title}
                       </h3>
                     </div>
-                    <div className="flex flex-wrap items-center gap-4 text-white/70 mb-4 text-sm">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 text-white/70 mb-3 sm:mb-4 text-xs sm:text-sm">
                       <div className="flex items-center gap-1.5">
                         <FaBuilding className="text-cyan-400" />
                         <span>{exp.company}</span>

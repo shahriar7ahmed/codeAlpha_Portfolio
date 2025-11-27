@@ -24,46 +24,15 @@ const Contact = () => {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
-    // Client-side validation
-    if (!formData.name.trim()) {
-      setSubmitStatus('error');
-      setIsSubmitting(false);
-      return;
-    }
-
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(formData.email)) {
-      setSubmitStatus('error');
-      setIsSubmitting(false);
-      return;
-    }
-
-    if (!formData.message.trim()) {
-      setSubmitStatus('error');
-      setIsSubmitting(false);
-      return;
-    }
-
     try {
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-      if (!serviceId || !templateId || !publicKey) {
-        throw new Error('EmailJS configuration is missing. Please check your environment variables.');
-      }
-
+      // Note: You'll need to set up EmailJS service and get your keys
+      // For now, this is a placeholder
       await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
-        },
-        publicKey
+        'YOUR_SERVICE_ID',
+        'YOUR_TEMPLATE_ID',
+        formData,
+        'YOUR_PUBLIC_KEY'
       );
-      
       setSubmitStatus('success');
       setFormData({ name: '', email: '', message: '' });
     } catch (error) {
@@ -106,46 +75,46 @@ const Contact = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent">
             Get In Touch
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-green-400 mx-auto rounded-full" />
-          <p className="text-white/80 mt-4 text-lg">
+          <div className="w-20 sm:w-24 h-1 bg-gradient-to-r from-cyan-400 to-green-400 mx-auto rounded-full" />
+          <p className="text-white/80 mt-4 text-sm sm:text-base md:text-lg">
             Have a project in mind? Let's work together!
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
           {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="space-y-6"
+            className="space-y-4 sm:space-y-6"
           >
-            <h3 className="text-2xl font-bold text-white mb-6">
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">
               Let's Connect
             </h3>
-            <p className="text-white/80 leading-relaxed">
+            <p className="text-white/80 leading-relaxed text-sm sm:text-base">
               I'm always open to discussing new projects, creative ideas, or
               opportunities to be part of your visions. Feel free to reach out!
             </p>
 
-            <div className="space-y-4 mt-8">
+            <div className="space-y-3 sm:space-y-4 mt-6 sm:mt-8">
               {contactInfo.map((info, index) => (
                 <motion.a
                   key={index}
                   href={info.href}
                   whileHover={{ scale: 1.05, x: 10 }}
-                  className="flex items-center gap-4 p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-cyan-400/50 transition-all duration-300 group"
+                  className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-cyan-400/50 transition-all duration-300 group"
                 >
-                  <div className="p-3 bg-gradient-to-r from-cyan-400 to-green-400 rounded-lg group-hover:scale-110 transition-transform">
-                    <info.icon className="text-white text-xl" />
+                  <div className="p-2 sm:p-3 bg-gradient-to-r from-cyan-400 to-green-400 rounded-lg group-hover:scale-110 transition-transform flex-shrink-0">
+                    <info.icon className="text-white text-lg sm:text-xl" />
                   </div>
-                  <div>
-                    <p className="text-white/60 text-sm">{info.label}</p>
-                    <p className="text-white font-semibold">{info.value}</p>
+                  <div className="min-w-0">
+                    <p className="text-white/60 text-xs sm:text-sm">{info.label}</p>
+                    <p className="text-white font-semibold text-sm sm:text-base truncate">{info.value}</p>
                   </div>
                 </motion.a>
               ))}
@@ -164,9 +133,9 @@ const Contact = () => {
             <div>
               <label
                 htmlFor="name"
-                className="block text-white font-semibold mb-2"
+                className="block text-white font-semibold mb-2 text-sm sm:text-base"
               >
-                Name <span className="text-red-400" aria-label="required">*</span>
+                Name
               </label>
               <input
                 type="text"
@@ -175,9 +144,7 @@ const Contact = () => {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                aria-required="true"
-                aria-invalid={submitStatus === 'error' && !formData.name}
-                className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 focus:border-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#302b63] text-white placeholder-white/50 transition-all duration-300"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 focus:border-cyan-400 focus:outline-none text-white placeholder-white/50 transition-all duration-300 text-sm sm:text-base"
                 placeholder="Your Name"
               />
             </div>
@@ -185,9 +152,9 @@ const Contact = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block text-white font-semibold mb-2"
+                className="block text-white font-semibold mb-2 text-sm sm:text-base"
               >
-                Email <span className="text-red-400" aria-label="required">*</span>
+                Email
               </label>
               <input
                 type="email"
@@ -196,9 +163,7 @@ const Contact = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                aria-required="true"
-                aria-invalid={submitStatus === 'error' && !formData.email}
-                className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 focus:border-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#302b63] text-white placeholder-white/50 transition-all duration-300"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 focus:border-cyan-400 focus:outline-none text-white placeholder-white/50 transition-all duration-300 text-sm sm:text-base"
                 placeholder="your.email@example.com"
               />
             </div>
@@ -206,9 +171,9 @@ const Contact = () => {
             <div>
               <label
                 htmlFor="message"
-                className="block text-white font-semibold mb-2"
+                className="block text-white font-semibold mb-2 text-sm sm:text-base"
               >
-                Message <span className="text-red-400" aria-label="required">*</span>
+                Message
               </label>
               <textarea
                 id="message"
@@ -216,10 +181,8 @@ const Contact = () => {
                 value={formData.message}
                 onChange={handleChange}
                 required
-                aria-required="true"
-                aria-invalid={submitStatus === 'error' && !formData.message}
-                rows="6"
-                className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 focus:border-cyan-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#302b63] text-white placeholder-white/50 transition-all duration-300 resize-none"
+                rows="5"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 focus:border-cyan-400 focus:outline-none text-white placeholder-white/50 transition-all duration-300 resize-none text-sm sm:text-base"
                 placeholder="Your Message"
               />
             </div>
@@ -229,8 +192,7 @@ const Contact = () => {
               disabled={isSubmitting}
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              className="w-full px-8 py-4 bg-gradient-to-r from-cyan-500 to-green-500 rounded-full font-semibold text-white shadow-lg hover:shadow-cyan-500/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#302b63] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-              aria-label={isSubmitting ? 'Sending message...' : 'Submit contact form'}
+              className="w-full px-8 py-4 bg-gradient-to-r from-cyan-500 to-green-500 rounded-full font-semibold text-white shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 'Sending...'
@@ -243,27 +205,23 @@ const Contact = () => {
             </motion.button>
 
             {submitStatus === 'success' && (
-              <motion.div
+              <motion.p
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="text-green-400 text-center"
-                role="alert"
-                aria-live="polite"
               >
                 Message sent successfully!
-              </motion.div>
+              </motion.p>
             )}
 
             {submitStatus === 'error' && (
-              <motion.div
+              <motion.p
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="text-red-400 text-center"
-                role="alert"
-                aria-live="assertive"
               >
                 Failed to send message. Please try again.
-              </motion.div>
+              </motion.p>
             )}
           </motion.form>
         </div>

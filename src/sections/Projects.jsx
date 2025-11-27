@@ -8,7 +8,6 @@ import m1 from '../assets/m1.PNG';
 import m2 from '../assets/m2.PNG';
 import w1 from '../assets/w1.PNG';
 import w2 from '../assets/w2.PNG';
-import ImageOptimized from '../components/ImageOptimized';
 
 const Projects = () => {
   const projects = [
@@ -99,10 +98,10 @@ const Projects = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent">
             Projects
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-green-400 mx-auto rounded-full" />
+          <div className="w-20 sm:w-24 h-1 bg-gradient-to-r from-cyan-400 to-green-400 mx-auto rounded-full" />
         </motion.div>
 
         <motion.div
@@ -110,7 +109,7 @@ const Projects = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
         >
           {projects.map((project, index) => (
             <motion.div
@@ -120,19 +119,14 @@ const Projects = () => {
               className="group relative bg-white/5 backdrop-blur-sm rounded-xl overflow-hidden border border-white/10 hover:border-cyan-400/50 transition-all duration-300 shadow-lg hover:shadow-cyan-400/20"
             >
               {/* Image */}
-              <div className="relative h-48 overflow-hidden">
-                <motion.div
+              <div className="relative h-40 sm:h-48 overflow-hidden">
+                <motion.img
+                  src={project.image}
+                  alt={`${project.title} project screenshot`}
+                  className="w-full h-full object-cover"
                   whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.3 }}
-                  className="w-full h-full"
-                >
-                  <ImageOptimized
-                    src={project.image}
-                    alt={`${project.title} - Project Screenshot`}
-                    className="w-full h-full object-cover"
-                    eager={false}
-                  />
-                </motion.div>
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="absolute bottom-4 left-4 right-4 flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <motion.a
@@ -159,18 +153,18 @@ const Projects = () => {
               </div>
 
               {/* Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-2">
+              <div className="p-4 sm:p-5 md:p-6">
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-2">
                   {project.title}
                 </h3>
-                <p className="text-white/70 mb-4 text-sm leading-relaxed">
+                <p className="text-white/70 mb-3 sm:mb-4 text-xs sm:text-sm leading-relaxed">
                   {project.description}
                 </p>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {project.technologies.map((tech, techIndex) => (
                     <span
                       key={techIndex}
-                      className="px-3 py-1 bg-cyan-400/20 text-cyan-400 rounded-full text-xs font-semibold"
+                      className="px-2 sm:px-3 py-0.5 sm:py-1 bg-cyan-400/20 text-cyan-400 rounded-full text-xs font-semibold"
                     >
                       {tech}
                     </span>
