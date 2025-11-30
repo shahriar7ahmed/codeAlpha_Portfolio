@@ -103,6 +103,40 @@ The built files will be in the `dist` directory.
 npm run preview
 ```
 
+## Deployment
+
+Your portfolio is ready to deploy! The build has been tested and all assets are optimized.
+
+### Quick Deploy to Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Go to [vercel.com](https://vercel.com)
+3. Import your repository
+4. Vercel will auto-detect Vite settings
+5. Click "Deploy"
+
+That's it! Your portfolio will be live in seconds.
+
+### Other Deployment Options
+
+For detailed deployment instructions including:
+- Netlify
+- GitHub Pages
+- Render
+- Cloudflare Pages
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete guide.
+
+### Pre-Deployment Checklist
+
+✅ Build successful (`npm run build`)  
+✅ All images in `public/` folder  
+✅ All links working correctly  
+✅ Responsive design tested  
+✅ No console errors  
+
+Your portfolio is deployment-ready!
+
 ## Technologies Used
 
 - **React** - UI library
