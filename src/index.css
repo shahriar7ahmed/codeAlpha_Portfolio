@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 * {
   margin: 0;
@@ -6,50 +8,20 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
-}
-
-@media (min-width: 768px) {
-  html {
-    scroll-padding-top: 6rem;
-  }
+:root {
+  --primary: #0a0a0f;
+  --secondary: #1a1a2e;
+  --accent: #16213e;
+  --highlight: #0f3460;
+  --text-primary: #e94560;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+  color: #ffffff;
   overflow-x: hidden;
-}
-
-@media (min-width: 768px) and (pointer: fine) {
-  body {
-    cursor: none;
-  }
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Roboto', sans-serif;
-}
-
-@layer utilities {
-  .gradient-bg {
-    background: linear-gradient(-45deg, #302b63, #00bf8f, #1cd8d2);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
-  }
-
-  @keyframes gradientShift {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
+  scroll-behavior: smooth;
 }
 
 /* Custom Scrollbar */
@@ -58,14 +30,59 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
+  background: #0a0a0f;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #00bf8f, #1cd8d2);
+  background: #e94560;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #1cd8d2, #00bf8f);
+  background: #ff6b7a;
 }
+
+/* Smooth animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #e94560 0%, #ff6b7a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Section spacing */
+.section {
+  min-height: 100vh;
+  padding: 80px 20px;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 60px 20px;
+  }
+}
+

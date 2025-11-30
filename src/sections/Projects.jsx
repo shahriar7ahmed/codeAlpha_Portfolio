@@ -1,182 +1,147 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
-import img1 from '../assets/img1.JPG';
-import img2 from '../assets/img2.JPG';
-import img3 from '../assets/img3.JPG';
-import m1 from '../assets/m1.PNG';
-import m2 from '../assets/m2.PNG';
-import w1 from '../assets/w1.PNG';
-import w2 from '../assets/w2.PNG';
+import { motion } from 'framer-motion'
+import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa'
 
 const Projects = () => {
   const projects = [
     {
-      title: 'E-Commerce Platform',
+      title: 'Upscale — Career Platform',
       description:
-        'A full-stack e-commerce solution with payment integration, user authentication, and admin dashboard.',
-      image: img1,
-      technologies: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-      github: 'https://github.com',
-      live: 'https://example.com',
+        'A full-stack career acceleration platform built with Next.js that helps professionals discover learning resources, generate tailored roadmaps, run AI-powered mock interviews, and collaborate with mentors and recruiters.',
+      tags: [
+        'Next.js',
+        'TypeScript',
+        'MongoDB',
+        'Tailwind CSS',
+        'NextAuth',
+        'Google Gemini',
+        'Vercel',
+        'RapidAPI'
+      ],
+      github: 'https://github.com/shahriar7ahmed/upScale_nextGen_hackaThon',
+      demo: 'https://up-scale-next-gen-hacka-thon-6xhl.vercel.app/',
+      image: '/upscale.png'
     },
     {
-      title: 'Task Management App',
+      title: 'FarmLink — Krishi Marketplace',
       description:
-        'A collaborative task management application with real-time updates and team collaboration features.',
-      image: img2,
-      technologies: ['React', 'Express', 'Socket.io', 'PostgreSQL'],
-      github: 'https://github.com',
-      live: 'https://example.com',
+        'A comprehensive marketplace connecting farmers with buyers, featuring automatic price freshness discounts, multi-role verification workflows, admin analytics, real-time notifications, and a community Q&A forum.',
+      tags: [
+        'Next.js',
+        'Node.js',
+        'MongoDB',
+        'Realtime',
+        'bKash/Nagad/Rocket (dummy)',
+        'Admin Dashboard',
+        'Vercel'
+      ],
+      github: 'https://github.com/mrmushii/krishi',
+      demo: 'https://krishi-ten.vercel.app/',
+      image: '/krishi.png'
     },
     {
-      title: 'Social Media Dashboard',
+      title: 'BetterBlocks',
       description:
-        'Analytics dashboard for social media management with data visualization and insights.',
-      image: img3,
-      technologies: ['React', 'D3.js', 'Node.js', 'MongoDB'],
-      github: 'https://github.com',
-      live: 'https://example.com',
+        'A modern web application showcasing innovative design and functionality.',
+      tags: ['React', 'JavaScript', 'CSS'],
+      github: 'https://github.com/shahriar7ahmed',
+      demo: '#',
+      image: '/betterblocks.png'
     },
-    {
-      title: 'Mobile App',
-      description:
-        'Cross-platform mobile application with offline capabilities and push notifications.',
-      image: m1,
-      technologies: ['React Native', 'Firebase', 'Redux'],
-      github: 'https://github.com',
-      live: 'https://example.com',
-    },
-    {
-      title: 'Portfolio Website',
-      description:
-        'Modern portfolio website with animations, responsive design, and contact form integration.',
-      image: w1,
-      technologies: ['React', 'Framer Motion', 'Tailwind CSS'],
-      github: 'https://github.com',
-      live: 'https://example.com',
-    },
-    {
-      title: 'Weather App',
-      description:
-        'Real-time weather application with location-based forecasts and beautiful UI.',
-      image: w2,
-      technologies: ['React', 'OpenWeather API', 'Chart.js'],
-      github: 'https://github.com',
-      live: 'https://example.com',
-    },
-  ];
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-      },
-    },
-  };
+  ]
 
   return (
-    <section id="projects" className="relative min-h-screen flex items-center py-12 md:py-16 lg:py-20 pt-20 md:pt-24 lg:pt-32">
+    <section id="projects" className="section py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-8 sm:mb-12 md:mb-16"
+          className="text-center mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent">
-            Projects
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            Featured <span className="gradient-text">Projects</span>
           </h2>
-          <div className="w-20 sm:w-24 h-1 bg-gradient-to-r from-cyan-400 to-green-400 mx-auto rounded-full" />
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#e94560] to-transparent mx-auto"></div>
+          <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
+            A collection of projects I've worked on, showcasing my skills and
+            creativity
+          </p>
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
-        >
+        <div className="grid md:grid-cols-2 gap-8">
           {projects.map((project, index) => (
             <motion.div
-              key={index}
-              variants={itemVariants}
-              whileHover={{ y: -10, scale: 1.02 }}
-              className="group relative bg-white/5 backdrop-blur-sm rounded-xl overflow-hidden border border-white/10 hover:border-cyan-400/50 transition-all duration-300 shadow-lg hover:shadow-cyan-400/20"
+              key={`${project.title}-${index}`}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              whileHover={{ y: -10 }}
+              className="glass rounded-2xl overflow-hidden group cursor-pointer"
             >
-              {/* Image */}
-              <div className="relative h-40 sm:h-48 overflow-hidden">
-                <motion.img
+              {/* Project Image */}
+              <div className="relative h-64 bg-gradient-to-br from-[#e94560] to-[#0f3460] overflow-hidden">
+                <img
                   src={project.image}
-                  alt={`${project.title} project screenshot`}
-                  className="w-full h-full object-cover"
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.3 }}
+                  alt={project.title}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  onError={(e) => {
+                    // Fallback to gradient if image fails to load
+                    e.target.style.display = 'none'
+                    e.target.parentElement.style.background = 'linear-gradient(135deg, #e94560 0%, #0f3460 100%)'
+                  }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute bottom-4 left-4 right-4 flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <motion.a
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+                <div className="absolute bottom-4 left-4 right-4 flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <a
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    className="p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-cyan-400 transition-colors"
+                    className="p-3 bg-white/20 backdrop-blur-md rounded-lg hover:bg-[#e94560] transition-colors"
+                    onClick={(e) => e.stopPropagation()}
                   >
-                    <FaGithub />
-                  </motion.a>
-                  <motion.a
-                    href={project.live}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    className="p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-green-400 transition-colors"
-                  >
-                    <FaExternalLinkAlt />
-                  </motion.a>
+                    <FaGithub size={20} />
+                  </a>
+                  {project.demo !== '#' && (
+                    <a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-3 bg-white/20 backdrop-blur-md rounded-lg hover:bg-[#e94560] transition-colors"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <FaExternalLinkAlt size={20} />
+                    </a>
+                  )}
                 </div>
               </div>
 
-              {/* Content */}
-              <div className="p-4 sm:p-5 md:p-6">
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-2">
+              {/* Project Content */}
+              <div className="p-6">
+                <h3 className="text-2xl font-semibold mb-3 gradient-text">
                   {project.title}
                 </h3>
-                <p className="text-white/70 mb-3 sm:mb-4 text-xs sm:text-sm leading-relaxed">
+                <p className="text-gray-400 mb-4 leading-relaxed">
                   {project.description}
                 </p>
-                <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                  {project.technologies.map((tech, techIndex) => (
+                <div className="flex flex-wrap gap-2">
+                  {project.tags.map((tag) => (
                     <span
-                      key={techIndex}
-                      className="px-2 sm:px-3 py-0.5 sm:py-1 bg-cyan-400/20 text-cyan-400 rounded-full text-xs font-semibold"
+                      key={tag}
+                      className="px-3 py-1 bg-[#e94560]/20 text-[#e94560] rounded-full text-sm"
                     >
-                      {tech}
+                      {tag}
                     </span>
                   ))}
                 </div>
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Projects;
+export default Projects

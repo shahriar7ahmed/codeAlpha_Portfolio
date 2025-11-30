@@ -1,138 +1,119 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'framer-motion'
 import {
-  FaReact,
-  FaNodeJs,
-  FaJs,
-  FaPython,
   FaHtml5,
   FaCss3Alt,
+  FaJs,
+  FaReact,
+  FaNode,
+  FaPython,
   FaGitAlt,
-  FaAws,
   FaDocker,
-  FaDatabase,
-} from 'react-icons/fa';
-import { SiMongodb, SiPostgresql, SiTypescript, SiTailwindcss, SiExpress } from 'react-icons/si';
+} from 'react-icons/fa'
+import {
+  SiTypescript,
+  SiTailwindcss,
+  SiMongodb,
+  SiPostgresql,
+  SiFirebase,
+  SiNextdotjs,
+} from 'react-icons/si'
 
 const Skills = () => {
   const skillCategories = [
     {
       title: 'Frontend',
       skills: [
-        { name: 'React', icon: FaReact, level: 90, color: 'from-cyan-400 to-blue-500' },
-        { name: 'JavaScript', icon: FaJs, level: 95, color: 'from-yellow-400 to-yellow-600' },
-        { name: 'TypeScript', icon: SiTypescript, level: 85, color: 'from-blue-400 to-blue-600' },
-        { name: 'HTML5', icon: FaHtml5, level: 95, color: 'from-orange-400 to-orange-600' },
-        { name: 'CSS3', icon: FaCss3Alt, level: 90, color: 'from-blue-400 to-blue-600' },
-        { name: 'Tailwind CSS', icon: SiTailwindcss, level: 88, color: 'from-cyan-400 to-teal-500' },
+        { name: 'HTML5', icon: FaHtml5, color: '#e34c26' },
+        { name: 'CSS3', icon: FaCss3Alt, color: '#264de4' },
+        { name: 'JavaScript', icon: FaJs, color: '#f7df1e' },
+        { name: 'TypeScript', icon: SiTypescript, color: '#007acc' },
+        { name: 'React', icon: FaReact, color: '#61dafb' },
+        { name: 'Next.js', icon: SiNextdotjs, color: '#000000' },
+        { name: 'Tailwind CSS', icon: SiTailwindcss, color: '#06b6d4' },
       ],
     },
     {
       title: 'Backend',
       skills: [
-        { name: 'Node.js', icon: FaNodeJs, level: 90, color: 'from-green-400 to-green-600' },
-        { name: 'Express.js', icon: SiExpress, level: 88, color: 'from-gray-400 to-gray-600' },
-        { name: 'Python', icon: FaPython, level: 85, color: 'from-yellow-400 to-blue-500' },
-        { name: 'MongoDB', icon: SiMongodb, level: 85, color: 'from-green-400 to-green-600' },
-        { name: 'PostgreSQL', icon: SiPostgresql, level: 80, color: 'from-blue-400 to-blue-600' },
-        { name: 'Database', icon: FaDatabase, level: 85, color: 'from-purple-400 to-purple-600' },
+        { name: 'Node.js', icon: FaNode, color: '#339933' },
+        { name: 'Python', icon: FaPython, color: '#3776ab' },
+        { name: 'MongoDB', icon: SiMongodb, color: '#47a248' },
+        { name: 'PostgreSQL', icon: SiPostgresql, color: '#316192' },
+        { name: 'Firebase', icon: SiFirebase, color: '#ffca28' },
       ],
     },
     {
       title: 'Tools & Others',
       skills: [
-        { name: 'Git', icon: FaGitAlt, level: 90, color: 'from-orange-400 to-red-500' },
-        { name: 'Docker', icon: FaDocker, level: 75, color: 'from-blue-400 to-cyan-500' },
-        { name: 'AWS', icon: FaAws, level: 70, color: 'from-orange-400 to-yellow-500' },
+        { name: 'Git', icon: FaGitAlt, color: '#f05032' },
+        { name: 'Docker', icon: FaDocker, color: '#0db7ed' },
       ],
     },
-  ];
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-      },
-    },
-  };
+  ]
 
   return (
-    <section id="skills" className="relative min-h-screen flex items-center py-12 md:py-16 lg:py-20 pt-20 md:pt-24 lg:pt-32">
+    <section id="skills" className="section py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-8 sm:mb-12 md:mb-16"
+          className="text-center mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent">
-            Skills
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            My <span className="gradient-text">Skills</span>
           </h2>
-          <div className="w-20 sm:w-24 h-1 bg-gradient-to-r from-cyan-400 to-green-400 mx-auto rounded-full" />
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#e94560] to-transparent mx-auto"></div>
+          <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
+            Technologies and tools I use to bring ideas to life
+          </p>
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="space-y-12"
-        >
+        <div className="space-y-12">
           {skillCategories.map((category, categoryIndex) => (
-            <motion.div key={categoryIndex} variants={itemVariants}>
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6 text-center">
+            <motion.div
+              key={category.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: categoryIndex * 0.2 }}
+            >
+              <h3 className="text-2xl font-semibold mb-6 text-center">
                 {category.title}
               </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
-                {category.skills.map((skill, skillIndex) => (
+              <div className="flex flex-wrap justify-center gap-6">
+                {category.skills.map((skill, index) => (
                   <motion.div
-                    key={skillIndex}
-                    whileHover={{ scale: 1.05, y: -5 }}
-                    className="p-3 sm:p-4 md:p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-cyan-400/50 transition-all duration-300"
+                    key={skill.name}
+                    initial={{ opacity: 0, scale: 0 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      duration: 0.4,
+                      delay: categoryIndex * 0.2 + index * 0.1,
+                    }}
+                    whileHover={{ scale: 1.1, y: -5 }}
+                    className="glass rounded-xl p-6 flex flex-col items-center gap-3 min-w-[120px] group cursor-pointer"
                   >
-                    <div className="flex flex-col items-center mb-2 sm:mb-3 md:mb-4">
-                      <skill.icon
-                        className={`text-2xl sm:text-3xl md:text-4xl mb-1.5 sm:mb-2 md:mb-3 bg-gradient-to-r ${skill.color} bg-clip-text text-transparent`}
-                      />
-                      <h4 className="text-white font-semibold text-center text-xs sm:text-sm md:text-base">
-                        {skill.name}
-                      </h4>
-                    </div>
-                    <div className="w-full bg-white/10 rounded-full h-1.5 sm:h-2 overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.level}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, delay: skillIndex * 0.1 }}
-                        className={`h-full bg-gradient-to-r ${skill.color} rounded-full`}
-                      />
-                    </div>
-                    <p className="text-white/70 text-xs sm:text-sm text-center mt-1.5 sm:mt-2">
-                      {skill.level}%
-                    </p>
+                    <skill.icon
+                      size={40}
+                      style={{ color: skill.color }}
+                      className="group-hover:scale-110 transition-transform"
+                    />
+                    <span className="text-sm font-medium text-gray-300">
+                      {skill.name}
+                    </span>
                   </motion.div>
                 ))}
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Skills;
+export default Skills
+
