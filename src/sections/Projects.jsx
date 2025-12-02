@@ -5,47 +5,66 @@ const Projects = () => {
   const projects = [
     {
       title: 'Upscale — Career Platform',
-      description:
-        'A full-stack career acceleration platform built with Next.js that helps professionals discover learning resources, generate tailored roadmaps, run AI-powered mock interviews, and collaborate with mentors and recruiters.',
-      tags: [
-        'Next.js',
-        'TypeScript',
-        'MongoDB',
-        'Tailwind CSS',
-        'NextAuth',
-        'Google Gemini',
-        'Vercel',
-        'RapidAPI'
-      ],
-      github: 'https://github.com/shahriar7ahmed/upScale_nextGen_hackaThon',
-      demo: 'https://up-scale-next-gen-hacka-thon-6xhl.vercel.app/',
+    description:
+      'A full-stack career acceleration platform built with Next.js that helps professionals discover learning resources, generate tailored roadmaps, run AI-powered mock interviews, and collaborate with mentors and recruiters.',
+    tags: [
+      'Next.js',
+      'TypeScript',
+      'MongoDB',
+      'Tailwind CSS',
+      'NextAuth',
+      'Google Gemini',
+      'Vercel',
+      'RapidAPI'
+    ],
+    github: 'https://github.com/shahriar7ahmed/upScale_nextGen_hackaThon',
+    demo: 'https://up-scale-next-gen-hacka-thon-6xhl.vercel.app/',
       image: '/upscale.png'
-    },
-    {
-      title: 'FarmLink — Krishi Marketplace',
-      description:
-        'A comprehensive marketplace connecting farmers with buyers, featuring automatic price freshness discounts, multi-role verification workflows, admin analytics, real-time notifications, and a community Q&A forum.',
-      tags: [
-        'Next.js',
-        'Node.js',
-        'MongoDB',
-        'Realtime',
-        'bKash/Nagad/Rocket (dummy)',
-        'Admin Dashboard',
-        'Vercel'
-      ],
-      github: 'https://github.com/mrmushii/krishi',
-      demo: 'https://krishi-ten.vercel.app/',
+  },
+
+  {
+    title: 'FarmLink — Krishi Marketplace',
+    description:
+      'A comprehensive marketplace connecting farmers with buyers, featuring automatic price freshness discounts, multi-role verification workflows, admin analytics, real-time notifications, and a community Q&A forum.',
+    tags: [
+      'Next.js',
+      'Node.js',
+      'MongoDB',
+      'Realtime',
+      'bKash/Nagad/Rocket (dummy)',
+      'Admin Dashboard',
+      'Vercel'
+    ],
+    github: 'https://github.com/mrmushii/krishi',
+    demo: 'https://krishi-ten.vercel.app/',
       image: '/krishi.png'
     },
     {
-      title: 'BetterBlocks',
-      description:
-        'A modern web application showcasing innovative design and functionality.',
-      tags: ['React', 'JavaScript', 'CSS'],
-      github: 'https://github.com/shahriar7ahmed',
-      demo: '#',
+      title: 'Better Blocks — Urban Planning Assistant',
+    description:
+      "A web-based urban planning tool (NASA Space Apps 2025) using NASA WorldPop and OpenStreetMap to compute real population counts, infrastructure density, readiness scores, and 5/10-year growth projections for a user-drawn region (optimized for Bangladesh).",
+    tags: [
+      'React',
+      'Vite',
+      'Leaflet',
+      'OpenStreetMap',
+      'NASA WorldPop',
+      'CSV Parsing',
+      'Client-side Analytics',
+      'Vercel'
+    ],
+    github: 'https://github.com/shahriar7ahmed/Hilshsa-Nasa',
+    demo: 'https://better-blocks.vercel.app/',
       image: '/betterblocks.png'
+    },
+    {
+      title: 'Social Media Analytics',
+      description:
+        'Analytics platform for tracking social media metrics with data visualization and reporting.',
+      tags: ['Next.js', 'Python', 'Chart.js'],
+      github: 'https://github.com',
+      demo: 'https://example.com',
+      image: '/api/placeholder/600/400',
     },
   ]
 
@@ -72,7 +91,7 @@ const Projects = () => {
         <div className="grid md:grid-cols-2 gap-8">
           {projects.map((project, index) => (
             <motion.div
-              key={`${project.title}-${index}`}
+              key={project.title}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -103,17 +122,15 @@ const Projects = () => {
                   >
                     <FaGithub size={20} />
                   </a>
-                  {project.demo !== '#' && (
-                    <a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-3 bg-white/20 backdrop-blur-md rounded-lg hover:bg-[#e94560] transition-colors"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <FaExternalLinkAlt size={20} />
-                    </a>
-                  )}
+                  <a
+                    href={project.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 bg-white/20 backdrop-blur-md rounded-lg hover:bg-[#e94560] transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <FaExternalLinkAlt size={20} />
+                  </a>
                 </div>
               </div>
 
@@ -145,3 +162,4 @@ const Projects = () => {
 }
 
 export default Projects
+

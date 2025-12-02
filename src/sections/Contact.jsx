@@ -45,13 +45,13 @@ const Contact = () => {
     {
       icon: FaPhone,
       label: 'Phone',
-      value: '+1 (555) 123-4567',
-      link: 'tel:+15551234567',
+      value: '+880-17758-32948',
+      link: 'tel:+8801775832948',
     },
     {
       icon: FaMapMarkerAlt,
       label: 'Location',
-      value: 'San Francisco, CA',
+      value: 'Chittagong, Bangladesh',
       link: null,
     },
   ]

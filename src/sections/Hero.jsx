@@ -99,11 +99,22 @@ const Hero = () => {
               Get In Touch
             </motion.a>
             <motion.a
-              href="/resume.pdf"
-              download
+              href="/Shahriar Ahmed Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-8 py-4 border-2 border-[#e94560] text-[#e94560] rounded-full font-semibold hover:bg-[#e94560] hover:text-white transition-colors flex items-center gap-2"
+              onClick={(e) => {
+                // Force download instead of opening in browser
+                e.preventDefault()
+                const link = document.createElement('a')
+                link.href = '/Shahriar Ahmed Resume.pdf'
+                link.download = 'Shahriar_Ahmed_Resume.pdf'
+                document.body.appendChild(link)
+                link.click()
+                document.body.removeChild(link)
+              }}
             >
               <FaDownload /> Download Resume
             </motion.a>

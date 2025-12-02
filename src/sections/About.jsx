@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { FaCode, FaLaptopCode, FaRocket } from 'react-icons/fa'
+import { FaCode, FaLaptopCode, FaRocket, FaFilePdf, FaDownload } from 'react-icons/fa'
 
 const About = () => {
   const skills = [
@@ -74,11 +74,46 @@ const About = () => {
                 technologies, I transform ideas into beautiful, functional
                 applications.
               </p>
-              <p className="text-gray-300 leading-relaxed">
+              <p className="text-gray-300 mb-6 leading-relaxed">
                 When I'm not coding, you can find me exploring new technologies,
                 contributing to open-source projects, or sharing knowledge with
                 the developer community.
               </p>
+              <div className="flex flex-col sm:flex-row gap-3 mt-6">
+                <motion.a
+                  href="/Shahriar Ahmed Resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-4 py-2 bg-[#e94560] text-white rounded-lg font-medium hover:bg-[#ff6b7a] transition-colors flex items-center justify-center gap-2 text-sm"
+                  onClick={(e) => {
+                    // Open in new tab without triggering download manager
+                    e.stopPropagation()
+                  }}
+                >
+                  <FaFilePdf /> View Resume
+                </motion.a>
+                <motion.a
+                  href="/Shahriar Ahmed Resume.pdf"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-4 py-2 border-2 border-[#e94560] text-[#e94560] rounded-lg font-medium hover:bg-[#e94560] hover:text-white transition-colors flex items-center justify-center gap-2 text-sm"
+                  onClick={(e) => {
+                    // Force download programmatically
+                    e.preventDefault()
+                    const link = document.createElement('a')
+                    link.href = '/Shahriar Ahmed Resume.pdf'
+                    link.download = 'Shahriar_Ahmed_Resume.pdf'
+                    link.style.display = 'none'
+                    document.body.appendChild(link)
+                    link.click()
+                    document.body.removeChild(link)
+                  }}
+                >
+                  <FaDownload /> Download
+                </motion.a>
+              </div>
             </div>
           </motion.div>
 
