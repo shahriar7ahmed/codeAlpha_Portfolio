@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { FaGithub, FaLinkedin, FaEnvelope, FaDownload } from 'react-icons/fa'
+import { FaGithub, FaLinkedin, FaEnvelope, FaDownload, FaExclamationTriangle } from 'react-icons/fa'
 
 const Hero = () => {
   const [currentRole, setCurrentRole] = useState(0)
+  const [resumeError, setResumeError] = useState(false)
+  const [isDownloading, setIsDownloading] = useState(false)
   
   const roles = [
     'Full Stack Developer',
@@ -30,7 +32,6 @@ const Hero = () => {
       id="home"
       className="section flex items-center justify-center min-h-screen relative overflow-hidden"
     >
-      {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#e94560]/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#0f3460]/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
@@ -38,7 +39,6 @@ const Hero = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center">
-          {/* Greeting */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -50,7 +50,6 @@ const Hero = () => {
             </p>
           </motion.div>
 
-          {/* Name */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -60,7 +59,6 @@ const Hero = () => {
             <span className="gradient-text">Shahriar Ahmed</span>
           </motion.h1>
 
-          {/* Animated Role */}
           <motion.div
             key={currentRole}
             initial={{ opacity: 0, y: 20 }}
@@ -72,7 +70,6 @@ const Hero = () => {
             <span className="gradient-text">{roles[currentRole]}</span>
           </motion.div>
 
-          {/* Description */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -83,7 +80,6 @@ const Hero = () => {
             Passionate about clean code and innovative solutions.
           </motion.p>
 
-          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -98,29 +94,65 @@ const Hero = () => {
             >
               Get In Touch
             </motion.a>
-            <motion.a
-              href="/Shahriar Ahmed Resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
+            <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 border-2 border-[#e94560] text-[#e94560] rounded-full font-semibold hover:bg-[#e94560] hover:text-white transition-colors flex items-center gap-2"
-              onClick={(e) => {
-                // Force download instead of opening in browser
+              className="px-8 py-4 border-2 border-[#e94560] text-[#e94560] rounded-full font-semibold hover:bg-[#e94560] hover:text-white transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={async (e) => {
                 e.preventDefault()
-                const link = document.createElement('a')
-                link.href = '/Shahriar Ahmed Resume.pdf'
-                link.download = 'Shahriar_Ahmed_Resume.pdf'
-                document.body.appendChild(link)
-                link.click()
-                document.body.removeChild(link)
+                setIsDownloading(true)
+                setResumeError(false)
+                
+                try {
+                  const response = await fetch('/Shahriar Ahmed Resume.pdf')
+                  if (!response.ok) {
+                    throw new Error('Resume not found')
+                  }
+                  
+                  const blob = await response.blob()
+                  const url = window.URL.createObjectURL(blob)
+                  const link = document.createElement('a')
+                  link.href = url
+                  link.download = 'Shahriar_Ahmed_Resume.pdf'
+                  document.body.appendChild(link)
+                  link.click()
+                  document.body.removeChild(link)
+                  window.URL.revokeObjectURL(url)
+                } catch (error) {
+                  console.error('Error downloading resume:', error)
+                  setResumeError(true)
+                  setTimeout(() => setResumeError(false), 5000)
+                } finally {
+                  setIsDownloading(false)
+                }
               }}
+              disabled={isDownloading}
+              aria-label="Download resume PDF"
             >
-              <FaDownload /> Download Resume
-            </motion.a>
+              {isDownloading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-[#e94560] border-t-transparent rounded-full animate-spin"></div>
+                  Downloading...
+                </>
+              ) : (
+                <>
+                  <FaDownload /> Download Resume
+                </>
+              )}
+            </motion.button>
+            {resumeError && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-4 p-3 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400 text-sm flex items-center gap-2"
+                role="alert"
+              >
+                <FaExclamationTriangle />
+                Resume file not found. Please contact me directly.
+              </motion.div>
+            )}
           </motion.div>
 
-          {/* Social Links */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -152,4 +184,3 @@ const Hero = () => {
 }
 
 export default Hero
-

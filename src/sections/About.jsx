@@ -1,7 +1,11 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { FaCode, FaLaptopCode, FaRocket, FaFilePdf, FaDownload } from 'react-icons/fa'
+import { FaCode, FaLaptopCode, FaRocket, FaFilePdf, FaDownload, FaExclamationTriangle } from 'react-icons/fa'
 
 const About = () => {
+  const [resumeError, setResumeError] = useState(false)
+  const [isDownloading, setIsDownloading] = useState(false)
+  
   const skills = [
     {
       icon: FaCode,
@@ -87,33 +91,84 @@ const About = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="px-4 py-2 bg-[#e94560] text-white rounded-lg font-medium hover:bg-[#ff6b7a] transition-colors flex items-center justify-center gap-2 text-sm"
-                  onClick={(e) => {
-                    // Open in new tab without triggering download manager
+                  onClick={async (e) => {
                     e.stopPropagation()
+                    try {
+                      const response = await fetch('/Shahriar Ahmed Resume.pdf')
+                      if (!response.ok) {
+                        e.preventDefault()
+                        setResumeError(true)
+                        setTimeout(() => setResumeError(false), 5000)
+                      }
+                    } catch (error) {
+                      e.preventDefault()
+                      setResumeError(true)
+                      setTimeout(() => setResumeError(false), 5000)
+                    }
                   }}
+                  aria-label="View resume PDF"
                 >
                   <FaFilePdf /> View Resume
                 </motion.a>
-                <motion.a
-                  href="/Shahriar Ahmed Resume.pdf"
+                <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-4 py-2 border-2 border-[#e94560] text-[#e94560] rounded-lg font-medium hover:bg-[#e94560] hover:text-white transition-colors flex items-center justify-center gap-2 text-sm"
-                  onClick={(e) => {
-                    // Force download programmatically
+                  className="px-4 py-2 border-2 border-[#e94560] text-[#e94560] rounded-lg font-medium hover:bg-[#e94560] hover:text-white transition-colors flex items-center justify-center gap-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={async (e) => {
                     e.preventDefault()
-                    const link = document.createElement('a')
-                    link.href = '/Shahriar Ahmed Resume.pdf'
-                    link.download = 'Shahriar_Ahmed_Resume.pdf'
-                    link.style.display = 'none'
-                    document.body.appendChild(link)
-                    link.click()
-                    document.body.removeChild(link)
+                    setIsDownloading(true)
+                    setResumeError(false)
+                    
+                    try {
+                      const response = await fetch('/Shahriar Ahmed Resume.pdf')
+                      if (!response.ok) {
+                        throw new Error('Resume not found')
+                      }
+                      
+                      const blob = await response.blob()
+                      const url = window.URL.createObjectURL(blob)
+                      const link = document.createElement('a')
+                      link.href = url
+                      link.download = 'Shahriar_Ahmed_Resume.pdf'
+                      link.style.display = 'none'
+                      document.body.appendChild(link)
+                      link.click()
+                      document.body.removeChild(link)
+                      window.URL.revokeObjectURL(url)
+                    } catch (error) {
+                      console.error('Error downloading resume:', error)
+                      setResumeError(true)
+                      setTimeout(() => setResumeError(false), 5000)
+                    } finally {
+                      setIsDownloading(false)
+                    }
                   }}
+                  disabled={isDownloading}
+                  aria-label="Download resume PDF"
                 >
-                  <FaDownload /> Download
-                </motion.a>
+                  {isDownloading ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-[#e94560] border-t-transparent rounded-full animate-spin"></div>
+                      Downloading...
+                    </>
+                  ) : (
+                    <>
+                      <FaDownload /> Download
+                    </>
+                  )}
+                </motion.button>
               </div>
+              {resumeError && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-3 p-2 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400 text-xs flex items-center gap-2"
+                  role="alert"
+                >
+                  <FaExclamationTriangle />
+                  Resume file not found. Please contact me directly.
+                </motion.div>
+              )}
             </div>
           </motion.div>
 

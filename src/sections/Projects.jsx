@@ -1,72 +1,38 @@
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa'
+import { getProjects } from '../utils/dataManager'
 
 const Projects = () => {
-  const projects = [
-    {
-      title: 'Upscale — Career Platform',
-    description:
-      'A full-stack career acceleration platform built with Next.js that helps professionals discover learning resources, generate tailored roadmaps, run AI-powered mock interviews, and collaborate with mentors and recruiters.',
-    tags: [
-      'Next.js',
-      'TypeScript',
-      'MongoDB',
-      'Tailwind CSS',
-      'NextAuth',
-      'Google Gemini',
-      'Vercel',
-      'RapidAPI'
-    ],
-    github: 'https://github.com/shahriar7ahmed/upScale_nextGen_hackaThon',
-    demo: 'https://up-scale-next-gen-hacka-thon-6xhl.vercel.app/',
-      image: '/upscale.png'
-  },
+  const [projects, setProjects] = useState([])
 
-  {
-    title: 'FarmLink — Krishi Marketplace',
-    description:
-      'A comprehensive marketplace connecting farmers with buyers, featuring automatic price freshness discounts, multi-role verification workflows, admin analytics, real-time notifications, and a community Q&A forum.',
-    tags: [
-      'Next.js',
-      'Node.js',
-      'MongoDB',
-      'Realtime',
-      'bKash/Nagad/Rocket (dummy)',
-      'Admin Dashboard',
-      'Vercel'
-    ],
-    github: 'https://github.com/mrmushii/krishi',
-    demo: 'https://krishi-ten.vercel.app/',
-      image: '/krishi.png'
-    },
-    {
-      title: 'Better Blocks — Urban Planning Assistant',
-    description:
-      "A web-based urban planning tool (NASA Space Apps 2025) using NASA WorldPop and OpenStreetMap to compute real population counts, infrastructure density, readiness scores, and 5/10-year growth projections for a user-drawn region (optimized for Bangladesh).",
-    tags: [
-      'React',
-      'Vite',
-      'Leaflet',
-      'OpenStreetMap',
-      'NASA WorldPop',
-      'CSV Parsing',
-      'Client-side Analytics',
-      'Vercel'
-    ],
-    github: 'https://github.com/shahriar7ahmed/Hilshsa-Nasa',
-    demo: 'https://better-blocks.vercel.app/',
-      image: '/betterblocks.png'
-    },
-    {
-      title: 'Social Media Analytics',
-      description:
-        'Analytics platform for tracking social media metrics with data visualization and reporting.',
-      tags: ['Next.js', 'Python', 'Chart.js'],
-      github: 'https://github.com',
-      demo: 'https://example.com',
-      image: '/api/placeholder/600/400',
-    },
-  ]
+  useEffect(() => {
+    // Load projects from localStorage
+    const data = getProjects()
+    setProjects(data)
+  }, [])
+
+  // Listen for storage changes to update projects when admin makes changes
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const data = getProjects()
+      setProjects(data)
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+    // Also check periodically (for same-tab updates)
+    const interval = setInterval(() => {
+      const data = getProjects()
+      if (JSON.stringify(data) !== JSON.stringify(projects)) {
+        setProjects(data)
+      }
+    }, 1000)
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+      clearInterval(interval)
+    }
+  }, [projects])
 
   return (
     <section id="projects" className="section py-20">
@@ -88,10 +54,11 @@ const Projects = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
+        {projects.length > 0 ? (
+          <div className="grid md:grid-cols-2 gap-8">
+            {projects.map((project, index) => (
             <motion.div
-              key={project.title}
+              key={project.id || project.title}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -104,6 +71,7 @@ const Projects = () => {
                 <img
                   src={project.image}
                   alt={project.title}
+                  loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                   onError={(e) => {
                     // Fallback to gradient if image fails to load
@@ -154,8 +122,13 @@ const Projects = () => {
                 </div>
               </div>
             </motion.div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-gray-400 text-lg">No projects available at the moment.</p>
+          </div>
+        )}
       </div>
     </section>
   )

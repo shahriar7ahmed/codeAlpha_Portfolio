@@ -1,0 +1,36 @@
+[
+  {
+    "id": "1",
+    "title": "NextGen Hackathon Runner-up",
+    "issuer": "NextGen Hackathon",
+    "issueDate": "2025-01-15",
+    "description": "Achieved runner-up position among 50+ teams (140+ participants) in a 24-hour national hackathon.",
+    "image": "/upscale.png",
+    "verificationLink": null,
+    "category": "hackathon",
+    "skills": ["Next.js", "TypeScript", "MongoDB", "AI Integration"]
+  },
+  {
+    "id": "2",
+    "title": "Intra Department Tech Hackathon Champion",
+    "issuer": "International Islamic University Chittagong",
+    "issueDate": "2025-02-10",
+    "description": "Won first place with \"FarmLink\", a multi-role agricultural marketplace.",
+    "image": "/krishi.png",
+    "verificationLink": null,
+    "category": "hackathon",
+    "skills": ["Next.js", "Node.js", "MongoDB", "Full Stack"]
+  },
+  {
+    "id": "3",
+    "title": "NASA International Space Apps Challenge",
+    "issuer": "NASA",
+    "issueDate": "2025-03-20",
+    "description": "Global nominee for developing a web tool leveraging NASA WorldPop data and OpenStreetMap.",
+    "image": "/betterblocks.png",
+    "verificationLink": null,
+    "category": "hackathon",
+    "skills": ["React", "Leaflet", "Data Analysis", "OpenStreetMap"]
+  }
+]
+

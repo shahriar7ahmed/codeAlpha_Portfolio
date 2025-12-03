@@ -1,0 +1,22 @@
+{
+  "name": "Shahriar Ahmed - Portfolio",
+  "short_name": "Portfolio",
+  "description": "Portfolio of Shahriar Ahmed - Full Stack Developer & UI/UX Designer",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#e94560",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/portfolio-my-profile-browser-svgrepo-com.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["portfolio", "developer", "web"],
+  "lang": "en-US",
+  "dir": "ltr"
+}
+

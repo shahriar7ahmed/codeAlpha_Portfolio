@@ -1,38 +1,115 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaPaperPlane } from 'react-icons/fa'
+import emailjs from '@emailjs/browser'
 
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: '',
+    honeypot: '', // Spam protection
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState(null)
+  const [errors, setErrors] = useState({})
+
+  // EmailJS configuration - get from environment variables
+  const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || ''
+  const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || ''
+  const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || ''
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
+  const validateForm = () => {
+    const newErrors = {}
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required'
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required'
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = 'Please enter a valid email address'
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = 'Message is required'
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = 'Message must be at least 10 characters long'
+    } else if (formData.message.trim().length > 1000) {
+      newErrors.message = 'Message must be less than 1000 characters'
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
   const handleChange = (e) => {
+    const { name, value } = e.target
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     })
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: '' })
+    }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setIsSubmitting(true)
 
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false)
+    // Honeypot check - if filled, it's a bot
+    if (formData.honeypot) {
+      return
+    }
+
+    if (!validateForm()) {
+      return
+    }
+
+    // Check if EmailJS is configured
+    if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+      setSubmitStatus('error')
+      setTimeout(() => setSubmitStatus(null), 5000)
+      return
+    }
+
+    setIsSubmitting(true)
+    setSubmitStatus(null)
+
+    try {
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        message: formData.message,
+        to_email: 'ahmedshahriar948@gmail.com',
+      }
+
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams, EMAILJS_PUBLIC_KEY)
+
       setSubmitStatus('success')
-      setFormData({ name: '', email: '', message: '' })
-      
+      setFormData({ name: '', email: '', message: '', honeypot: '' })
+      setErrors({})
+
       setTimeout(() => {
         setSubmitStatus(null)
-      }, 3000)
-    }, 1000)
+      }, 5000)
+    } catch (error) {
+      console.error('EmailJS error:', error)
+      setSubmitStatus('error')
+      setTimeout(() => {
+        setSubmitStatus(null)
+      }, 5000)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const contactInfo = [
@@ -136,12 +213,24 @@ const Contact = () => {
             className="glass rounded-2xl p-8"
           >
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Honeypot field - hidden from users */}
+              <input
+                type="text"
+                name="honeypot"
+                value={formData.honeypot}
+                onChange={handleChange}
+                style={{ display: 'none' }}
+                tabIndex="-1"
+                autoComplete="off"
+                aria-hidden="true"
+              />
+
               <div>
                 <label
                   htmlFor="name"
                   className="block text-sm font-medium text-gray-300 mb-2"
                 >
-                  Name
+                  Name *
                 </label>
                 <input
                   type="text"
@@ -150,9 +239,18 @@ const Contact = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#e94560] transition-all"
+                  className={`w-full px-4 py-3 bg-white/10 border ${
+                    errors.name ? 'border-red-500' : 'border-white/20'
+                  } rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#e94560] transition-all`}
                   placeholder="Your Name"
+                  aria-invalid={errors.name ? 'true' : 'false'}
+                  aria-describedby={errors.name ? 'name-error' : undefined}
                 />
+                {errors.name && (
+                  <p id="name-error" className="mt-1 text-sm text-red-400" role="alert">
+                    {errors.name}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -160,7 +258,7 @@ const Contact = () => {
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-300 mb-2"
                 >
-                  Email
+                  Email *
                 </label>
                 <input
                   type="email"
@@ -169,9 +267,18 @@ const Contact = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#e94560] transition-all"
-                  placeholder="ahmedshahriar948@gmail.com"
+                  className={`w-full px-4 py-3 bg-white/10 border ${
+                    errors.email ? 'border-red-500' : 'border-white/20'
+                  } rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#e94560] transition-all`}
+                  placeholder="your.email@example.com"
+                  aria-invalid={errors.email ? 'true' : 'false'}
+                  aria-describedby={errors.email ? 'email-error' : undefined}
                 />
+                {errors.email && (
+                  <p id="email-error" className="mt-1 text-sm text-red-400" role="alert">
+                    {errors.email}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -179,7 +286,7 @@ const Contact = () => {
                   htmlFor="message"
                   className="block text-sm font-medium text-gray-300 mb-2"
                 >
-                  Message
+                  Message * <span className="text-gray-500 text-xs">(10-1000 characters)</span>
                 </label>
                 <textarea
                   id="message"
@@ -188,9 +295,25 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   rows={6}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#e94560] transition-all resize-none"
+                  className={`w-full px-4 py-3 bg-white/10 border ${
+                    errors.message ? 'border-red-500' : 'border-white/20'
+                  } rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#e94560] transition-all resize-none`}
                   placeholder="Your message..."
+                  aria-invalid={errors.message ? 'true' : 'false'}
+                  aria-describedby={errors.message ? 'message-error' : undefined}
                 />
+                <div className="flex justify-between items-center mt-1">
+                  {errors.message ? (
+                    <p id="message-error" className="text-sm text-red-400" role="alert">
+                      {errors.message}
+                    </p>
+                  ) : (
+                    <span></span>
+                  )}
+                  <span className="text-xs text-gray-500">
+                    {formData.message.length}/1000
+                  </span>
+                </div>
               </div>
 
               {submitStatus === 'success' && (
@@ -198,8 +321,20 @@ const Contact = () => {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-green-400"
+                  role="alert"
                 >
                   Message sent successfully! I'll get back to you soon.
+                </motion.div>
+              )}
+
+              {submitStatus === 'error' && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400"
+                  role="alert"
+                >
+                  Failed to send message. Please try again later or contact me directly at ahmedshahriar948@gmail.com
                 </motion.div>
               )}
 

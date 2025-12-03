@@ -20,15 +20,27 @@ const Navbar = () => {
     { name: 'Skills', href: '#skills' },
     { name: 'Projects', href: '#projects' },
     { name: 'Experience', href: '#experience' },
+    { name: 'Certificates', href: '#certificates' },
     { name: 'Contact', href: '#contact' },
   ]
 
-  const scrollToSection = (href) => {
-    const element = document.querySelector(href)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+  const scrollToSection = (href, closeMenu = false) => {
+    // Close menu first if needed
+    if (closeMenu) {
       setIsMobileMenuOpen(false)
     }
+    
+    // Use requestAnimationFrame to ensure DOM is ready
+    requestAnimationFrame(() => {
+      const element = document.querySelector(href)
+      if (element) {
+        // Use scrollIntoView which is more reliable on mobile
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        })
+      }
+    })
   }
 
   return (
@@ -49,7 +61,7 @@ const Navbar = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="text-2xl font-bold gradient-text cursor-pointer bg-transparent border-none"
-            onClick={() => scrollToSection('#home')}
+            onClick={() => scrollToSection('#home', false)}
             aria-label="Go to home"
           >
             Portfolio
@@ -64,7 +76,7 @@ const Navbar = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ scale: 1.1 }}
-                onClick={() => scrollToSection(item.href)}
+                onClick={() => scrollToSection(item.href, false)}
                 className="text-gray-300 hover:text-[#e94560] transition-colors font-medium"
               >
                 {item.name}
@@ -74,10 +86,11 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white p-2"
+            className="md:hidden text-white p-2 z-50 relative"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={isMobileMenuOpen}
+            type="button"
           >
             {isMobileMenuOpen ? (
               <HiX size={28} />
@@ -91,24 +104,38 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-[#0a0a0f]/95 backdrop-blur-md"
-          >
-            <div className="px-4 py-6 space-y-4">
-              {navItems.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => scrollToSection(item.href)}
-                  className="block w-full text-left text-gray-300 hover:text-[#e94560] transition-colors py-2 font-medium"
-                >
-                  {item.name}
-                </button>
-              ))}
-            </div>
-          </motion.div>
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 bg-black/50 z-40 md:hidden"
+            />
+            
+            {/* Menu Content */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.2 }}
+              className="md:hidden bg-[#0a0a0f]/98 backdrop-blur-md border-t border-white/10 relative z-50"
+            >
+              <div className="px-4 py-6 space-y-2">
+                {navItems.map((item) => (
+                  <button
+                    key={item.name}
+                    onClick={() => scrollToSection(item.href, true)}
+                    className="block w-full text-left text-gray-300 hover:text-[#e94560] active:text-[#e94560] transition-colors py-3 font-medium active:bg-white/10 rounded-lg px-4 -mx-4"
+                    type="button"
+                  >
+                    {item.name}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </motion.nav>
@@ -116,4 +143,3 @@ const Navbar = () => {
 }
 
 export default Navbar
-
