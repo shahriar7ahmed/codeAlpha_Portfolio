@@ -1,15 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 
 import { BallCanvas } from "../components/canvas";
 import { SectionWrapper } from "../hoc";
 import { technologies } from "../constants";
 import { styles } from "../styles";
-import { textVariant } from "../utils/motion";
+import { textVariant, fadeIn } from "../utils/motion";
 
 const Tech = () => {
-  const [hoveredTech, setHoveredTech] = useState(null);
-
   return (
     <>
       <motion.div variants={textVariant()}>
@@ -17,32 +15,30 @@ const Tech = () => {
         <h2 className={styles.sectionHeadText}>Technologies.</h2>
       </motion.div>
 
-      <div className='mt-20 flex flex-row flex-wrap justify-center gap-7 sm:gap-10'>
-        {technologies.map((technology) => (
-          <div 
-            className='w-20 h-20 sm:w-28 sm:h-28 relative group cursor-pointer' 
+      <motion.div 
+        variants={fadeIn("", "", 0.1, 1)}
+        className='mt-20 flex flex-row flex-wrap justify-center gap-10'
+      >
+        {technologies.map((technology, index) => (
+          <motion.div
             key={technology.name}
-            title={technology.name}
-            aria-label={technology.name}
-            onMouseEnter={() => setHoveredTech(technology.name)}
-            onMouseLeave={() => setHoveredTech(null)}
+            variants={fadeIn("up", "spring", index * 0.1, 0.75)}
+            className='w-28 h-28 group relative'
           >
-            <BallCanvas icon={technology.icon} isHovered={hoveredTech === technology.name} />
-            <div 
-              className='absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full mt-2 opacity-0 group-hover:opacity-100 pointer-events-none z-50'
-              style={{ 
-                transition: "opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                willChange: "opacity",
-                transform: "translate(-50%, 0) translateZ(0)"
-              }}
+            <BallCanvas icon={technology.icon} />
+            {/* Tooltip on hover */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileHover={{ opacity: 1, y: 0 }}
+              className='absolute -bottom-8 left-1/2 transform -translate-x-1/2 pointer-events-none z-10'
             >
-              <div className='bg-black-100 px-3 py-1 rounded-lg text-white text-xs sm:text-sm whitespace-nowrap shadow-lg'>
+              <div className='bg-black-100/95 backdrop-blur-sm px-3 py-1 rounded-lg text-white text-sm font-medium whitespace-nowrap shadow-lg border border-[#915EFF]/30'>
                 {technology.name}
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </>
   );
 };

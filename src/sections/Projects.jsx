@@ -7,6 +7,7 @@ import { github } from "../assets";
 import { SectionWrapper } from "../hoc";
 import { fadeIn, textVariant } from "../utils/motion";
 import { getProjects } from "../utils/dataManager";
+import ProjectDetailModal from "../components/ProjectDetailModal";
 
 const ProjectCard = ({
   index,
@@ -16,25 +17,50 @@ const ProjectCard = ({
   image,
   source_code_link,
   demo_link,
+  project,
+  onCardClick,
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
+  const handleCardClick = (e) => {
+    // Don't open modal if clicking on GitHub/demo links
+    if (e.target.closest('a') || e.target.closest('[aria-label]')) {
+      return;
+    }
+    if (onCardClick) {
+      onCardClick();
+    }
+  };
+
   return (
     <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)}>
-      <Tilt
-        tiltMaxAngleX={45}
-        tiltMaxAngleY={45}
-        scale={1.02}
-        transitionSpeed={450}
-        className='bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full shadow-card'
-        style={{ 
-          willChange: "transform, box-shadow",
-          transition: "box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+      <motion.div
+        whileHover={{ 
+          y: -8,
+          transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }
         }}
-        onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"}
-        onMouseLeave={(e) => e.currentTarget.style.boxShadow = ""}
       >
+        <Tilt
+          tiltMaxAngleX={45}
+          tiltMaxAngleY={45}
+          scale={1.03}
+          transitionSpeed={450}
+          className='bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full shadow-card cursor-pointer'
+          style={{ 
+            willChange: "transform, box-shadow",
+            transition: "box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow = "0 25px 50px -12px rgba(145, 94, 255, 0.25), 0 20px 25px -5px rgba(0, 0, 0, 0.1)";
+            e.currentTarget.style.border = "1px solid rgba(145, 94, 255, 0.3)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = "";
+            e.currentTarget.style.border = "1px solid transparent";
+          }}
+          onClick={handleCardClick}
+        >
         <div className='relative w-full h-[230px] overflow-hidden rounded-2xl'>
           {!imageLoaded && !imageError && (
             <div className='absolute inset-0 bg-gradient-to-br from-[#915EFF] to-[#bf61ff] animate-pulse flex items-center justify-center'>
@@ -141,12 +167,15 @@ const ProjectCard = ({
           ))}
         </div>
       </Tilt>
+      </motion.div>
     </motion.div>
   );
 };
 
 const Works = () => {
   const [projects, setProjects] = useState([]);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const data = getProjects();
@@ -172,6 +201,16 @@ const Works = () => {
       clearInterval(interval);
     };
   }, [projects]);
+
+  const handleCardClick = (project) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedProject(null);
+  };
 
   return (
     <>
@@ -204,9 +243,25 @@ const Works = () => {
             image={project.image}
             source_code_link={project.github}
             demo_link={project.demo}
+            project={project}
+            onCardClick={() => handleCardClick(project)}
           />
         ))}
       </div>
+
+      <ProjectDetailModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        project={selectedProject ? {
+          name: selectedProject.title,
+          title: selectedProject.title,
+          description: selectedProject.description,
+          tags: selectedProject.tags || [],
+          image: selectedProject.image,
+          source_code_link: selectedProject.github,
+          demo_link: selectedProject.demo,
+        } : null}
+      />
     </>
   );
 };

@@ -276,24 +276,53 @@ const Contact = () => {
             </motion.div>
           )}
 
-          <button
+          <motion.button
             type='submit'
             disabled={loading}
-            className='bg-tertiary py-3 px-8 rounded-xl outline-none w-fit text-white font-bold shadow-md shadow-primary disabled:opacity-50 disabled:cursor-not-allowed'
+            className='relative bg-tertiary py-3 px-8 rounded-xl outline-none w-fit text-white font-bold shadow-md shadow-primary disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden'
             style={{ 
               transition: "box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
               transform: "translateZ(0)",
               willChange: "transform, box-shadow"
             }}
+            whileHover={!loading ? { 
+              scale: 1.05,
+              boxShadow: "0 10px 25px rgba(145, 94, 255, 0.4)"
+            } : {}}
+            whileTap={!loading ? { scale: 0.95 } : {}}
             onMouseEnter={(e) => {
               if (!e.currentTarget.disabled) {
                 e.currentTarget.style.boxShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)";
-                e.currentTarget.style.transform = "scale(1.05) translateZ(0)";
               }
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = "";
-              e.currentTarget.style.transform = "scale(1) translateZ(0)";
+              if (!e.currentTarget.disabled) {
+                e.currentTarget.style.boxShadow = "";
+              }
+            }}
+            onClick={(e) => {
+              if (!loading) {
+                // Create ripple effect
+                const button = e.currentTarget;
+                const ripple = document.createElement('span');
+                const rect = button.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s ease-out';
+                ripple.style.pointerEvents = 'none';
+                
+                button.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+              }
             }}
           >
             {loading ? (
@@ -304,7 +333,7 @@ const Contact = () => {
             ) : (
               "Send"
             )}
-          </button>
+          </motion.button>
         </form>
       </motion.div>
 

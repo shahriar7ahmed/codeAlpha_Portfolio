@@ -6,26 +6,40 @@ import { styles } from "../styles";
 import { SectionWrapper } from "../hoc";
 import { fadeIn, textVariant } from "../utils/motion";
 import { getCertificates } from "../utils/dataManager";
+import CertificateDetailModal from "../components/CertificateDetailModal";
 
-const CertificateCard = ({ index, certificate }) => {
+const CertificateCard = ({ index, certificate, onCardClick }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
   return (
     <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)}>
-      <Tilt
-        tiltMaxAngleX={45}
-        tiltMaxAngleY={45}
-        scale={1.02}
-        transitionSpeed={450}
-        className='bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full min-h-[500px] flex flex-col shadow-card'
-        style={{ 
-          willChange: "transform, box-shadow",
-          transition: "box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+      <motion.div
+        whileHover={{ 
+          y: -8,
+          transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }
         }}
-        onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"}
-        onMouseLeave={(e) => e.currentTarget.style.boxShadow = ""}
       >
+        <Tilt
+          tiltMaxAngleX={45}
+          tiltMaxAngleY={45}
+          scale={1.03}
+          transitionSpeed={450}
+          className='bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full min-h-[500px] flex flex-col shadow-card cursor-pointer'
+          style={{ 
+            willChange: "transform, box-shadow",
+            transition: "box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow = "0 25px 50px -12px rgba(145, 94, 255, 0.25), 0 20px 25px -5px rgba(0, 0, 0, 0.1)";
+            e.currentTarget.style.border = "1px solid rgba(145, 94, 255, 0.3)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = "";
+            e.currentTarget.style.border = "1px solid transparent";
+          }}
+          onClick={() => onCardClick && onCardClick()}
+        >
         <div className='relative w-full h-[230px] mb-4 overflow-hidden rounded-2xl'>
           {!imageLoaded && !imageError && (
             <div className='absolute inset-0 bg-gradient-to-br from-[#915EFF] to-[#bf61ff] animate-pulse flex items-center justify-center'>
@@ -87,12 +101,15 @@ const CertificateCard = ({ index, certificate }) => {
           )}
         </div>
       </Tilt>
+      </motion.div>
     </motion.div>
   );
 };
 
 const Certificates = () => {
   const [certificates, setCertificates] = useState([]);
+  const [selectedCertificate, setSelectedCertificate] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const data = getCertificates();
@@ -119,6 +136,16 @@ const Certificates = () => {
     };
   }, [certificates]);
 
+  const handleCardClick = (certificate) => {
+    setSelectedCertificate(certificate);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedCertificate(null);
+  };
+
   return (
     <>
       <motion.div variants={textVariant()}>
@@ -142,9 +169,16 @@ const Certificates = () => {
             key={`certificate-${certificate.id || index}`}
             index={index}
             certificate={certificate}
+            onCardClick={() => handleCardClick(certificate)}
           />
         ))}
       </div>
+
+      <CertificateDetailModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        certificate={selectedCertificate}
+      />
     </>
   );
 };
