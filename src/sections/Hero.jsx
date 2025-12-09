@@ -1,186 +1,51 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { FaGithub, FaLinkedin, FaEnvelope, FaDownload, FaExclamationTriangle } from 'react-icons/fa'
+import { motion } from "framer-motion";
+
+import { styles } from "../styles";
+import { ComputersCanvas } from "../components/canvas";
 
 const Hero = () => {
-  const [currentRole, setCurrentRole] = useState(0)
-  const [resumeError, setResumeError] = useState(false)
-  const [isDownloading, setIsDownloading] = useState(false)
-  
-  const roles = [
-    'Full Stack Developer',
-    'UI/UX Designer',
-    'Problem Solver',
-    'Creative Thinker',
-  ]
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentRole((prev) => (prev + 1) % roles.length)
-    }, 3000)
-    return () => clearInterval(interval)
-  }, [roles.length])
-
-  const socialLinks = [
-    { icon: FaGithub, href: 'https://github.com/shahriar7ahmed/', label: 'GitHub' },
-    { icon: FaLinkedin, href: 'https://www.linkedin.com/in/shahriar-ahmed-405261347/', label: 'LinkedIn' },
-    { icon: FaEnvelope, href: 'mailto:ahmedshahriar948@gmail.com', label: 'Email' },
-  ]
-
   return (
-    <section
-      id="home"
-      className="section flex items-center justify-center min-h-screen relative overflow-hidden"
-    >
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#e94560]/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#0f3460]/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
-      </div>
+    <section className={`relative w-full h-screen mx-auto`}>
+      <div
+        className={`absolute inset-0 top-[120px]  max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-5`}
+      >
+        <div className='flex flex-col justify-center items-center mt-5'>
+          <div className='w-5 h-5 rounded-full bg-[#915EFF]' />
+          <div className='w-1 sm:h-80 h-40 violet-gradient' />
+        </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-4"
-          >
-            <p className="text-lg md:text-xl text-gray-400 font-medium">
-              Hi, I'm
-            </p>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-bold mb-4"
-          >
-            <span className="gradient-text">Shahriar Ahmed</span>
-          </motion.h1>
-
-          <motion.div
-            key={currentRole}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
-            className="text-2xl md:text-4xl lg:text-5xl font-semibold mb-8 min-h-[60px] flex items-center justify-center"
-          >
-            <span className="gradient-text">{roles[currentRole]}</span>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12"
-          >
-            I create beautiful, functional, and user-centered digital experiences.
-            Passionate about clean code and innovative solutions.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
-          >
-            <motion.a
-              href="#contact"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-[#e94560] text-white rounded-full font-semibold hover:bg-[#ff6b7a] transition-colors shadow-lg"
-            >
-              Get In Touch
-            </motion.a>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 border-2 border-[#e94560] text-[#e94560] rounded-full font-semibold hover:bg-[#e94560] hover:text-white transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-              onClick={async (e) => {
-                e.preventDefault()
-                setIsDownloading(true)
-                setResumeError(false)
-                
-                try {
-                  const response = await fetch('/Shahriar Ahmed Resume.pdf')
-                  if (!response.ok) {
-                    throw new Error('Resume not found')
-                  }
-                  
-                  const blob = await response.blob()
-                  const url = window.URL.createObjectURL(blob)
-                  const link = document.createElement('a')
-                  link.href = url
-                  link.download = 'Shahriar_Ahmed_Resume.pdf'
-                  document.body.appendChild(link)
-                  link.click()
-                  document.body.removeChild(link)
-                  window.URL.revokeObjectURL(url)
-                } catch (error) {
-                  console.error('Error downloading resume:', error)
-                  setResumeError(true)
-                  setTimeout(() => setResumeError(false), 5000)
-                } finally {
-                  setIsDownloading(false)
-                }
-              }}
-              disabled={isDownloading}
-              aria-label="Download resume PDF"
-            >
-              {isDownloading ? (
-                <>
-                  <div className="w-5 h-5 border-2 border-[#e94560] border-t-transparent rounded-full animate-spin"></div>
-                  Downloading...
-                </>
-              ) : (
-                <>
-                  <FaDownload /> Download Resume
-                </>
-              )}
-            </motion.button>
-            {resumeError && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-4 p-3 bg-red-500/20 border border-red-500/50 rounded-lg text-red-400 text-sm flex items-center gap-2"
-                role="alert"
-              >
-                <FaExclamationTriangle />
-                Resume file not found. Please contact me directly.
-              </motion.div>
-            )}
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1 }}
-            className="flex items-center justify-center gap-6"
-          >
-            {socialLinks.map((social, index) => (
-              <motion.a
-                key={social.label}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1 + index * 0.1 }}
-                whileHover={{ scale: 1.2, y: -5 }}
-                whileTap={{ scale: 0.9 }}
-                className="text-gray-400 hover:text-[#e94560] transition-colors"
-                aria-label={social.label}
-              >
-                <social.icon size={28} />
-              </motion.a>
-            ))}
-          </motion.div>
+        <div>
+          <h1 className={`${styles.heroHeadText} text-white`}>
+            Hi, I'm <span className='text-[#915EFF]'>Shahriar</span>
+          </h1>
+          <p className={`${styles.heroSubText} mt-2 text-white-100`}>
+            I develop 3D visuals, user <br className='sm:block hidden' />
+            interfaces and web applications
+          </p>
         </div>
       </div>
-    </section>
-  )
-}
 
-export default Hero
+      <ComputersCanvas />
+
+      <div className='absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center'>
+        <a href='#about' aria-label="Scroll to about section">
+          <div className='w-[35px] h-[64px] rounded-3xl border-4 border-[#915EFF] flex justify-center items-start p-2 hover:border-[#a575ff] transition-colors duration-300 cursor-pointer'>
+            <motion.div
+              animate={{
+                y: [0, 24, 0],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                repeatType: "loop",
+              }}
+              className='w-3 h-3 rounded-full bg-[#915EFF] mb-1'
+            />
+          </div>
+        </a>
+      </div>
+    </section>
+  );
+};
+
+export default Hero;

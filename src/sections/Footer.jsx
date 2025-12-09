@@ -38,7 +38,7 @@ const Footer = () => {
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ scale: 1.2, y: -5 }}
                 whileTap={{ scale: 0.9 }}
-                className="text-gray-400 hover:text-[#e94560] transition-colors"
+                className="text-secondary hover:text-white transition-colors duration-300"
                 aria-label={social.label}
               >
                 <social.icon size={24} />
@@ -53,7 +53,7 @@ const Footer = () => {
             viewport={{ once: true }}
             className="text-gray-400 text-sm"
           >
-            Made with <span className="text-[#e94560]">♥</span> using React
+            Made with <span className="text-[#915EFF]">♥</span> using React & Three.js
           </motion.p>
         </div>
       </div>

@@ -100,6 +100,34 @@ export const deleteCertificate = (id) => {
   return saveCertificates(filtered)
 }
 
+// Remove duplicate certificates
+export const removeDuplicateCertificates = () => {
+  const certificates = getCertificates()
+  const seen = new Set()
+  const unique = []
+  
+  for (const cert of certificates) {
+    // Check by ID first
+    if (seen.has(cert.id)) continue
+    
+    // Check by image path
+    const imageKey = cert.image?.toLowerCase()
+    if (imageKey && seen.has(`img:${imageKey}`)) continue
+    
+    // Check by title (normalized)
+    const titleKey = cert.title?.toLowerCase().trim()
+    if (titleKey && seen.has(`title:${titleKey}`)) continue
+    
+    // Mark as seen and add to unique list
+    seen.add(cert.id)
+    if (imageKey) seen.add(`img:${imageKey}`)
+    if (titleKey) seen.add(`title:${titleKey}`)
+    unique.push(cert)
+  }
+  
+  return saveCertificates(unique)
+}
+
 // Achievements Management
 export const getAchievements = () => {
   try {
@@ -145,6 +173,34 @@ export const deleteAchievement = (id) => {
   const achievements = getAchievements()
   const filtered = achievements.filter((a) => a.id !== id)
   return saveAchievements(filtered)
+}
+
+// Remove duplicate achievements
+export const removeDuplicateAchievements = () => {
+  const achievements = getAchievements()
+  const seen = new Set()
+  const unique = []
+  
+  for (const achievement of achievements) {
+    // Check by ID first
+    if (seen.has(achievement.id)) continue
+    
+    // Check by title+company combination
+    const titleCompanyKey = `${achievement.title?.toLowerCase().trim()}_${achievement.company?.toLowerCase().trim()}`
+    if (titleCompanyKey && seen.has(`tc:${titleCompanyKey}`)) continue
+    
+    // Check by title+period combination
+    const titlePeriodKey = `${achievement.title?.toLowerCase().trim()}_${achievement.period?.toLowerCase().trim()}`
+    if (titlePeriodKey && seen.has(`tp:${titlePeriodKey}`)) continue
+    
+    // Mark as seen and add to unique list
+    seen.add(achievement.id)
+    if (titleCompanyKey) seen.add(`tc:${titleCompanyKey}`)
+    if (titlePeriodKey) seen.add(`tp:${titlePeriodKey}`)
+    unique.push(achievement)
+  }
+  
+  return saveAchievements(unique)
 }
 
 // Export/Import functionality
@@ -208,77 +264,266 @@ export const initializeDefaultData = () => {
     saveProjects(defaultProjects)
   }
 
-  // Initialize certificates if empty
-  if (getCertificates().length === 0) {
-    const defaultCertificates = [
-      {
-        id: '1',
-        title: 'NASA International Space Apps Challenge',
-        issuer: 'NASA',
-        issueDate: '2025-01-01',
-        description: 'Global nominee for developing a web tool leveraging NASA WorldPop data and OpenStreetMap to evaluate urban readiness.',
-        image: '/NASA Space Apps Challenge Certificate-1.png',
-        verificationLink: null,
-        category: 'hackathon',
-        skills: ['React', 'Leaflet', 'Data Analysis', 'OpenStreetMap', 'NASA WorldPop'],
-      },
-      {
-        id: '2',
-        title: 'Full Stack Development with MERN',
-        issuer: 'Course Provider',
-        issueDate: '2024-12-01',
-        description: 'Completed comprehensive full-stack development course covering MongoDB, Express, React, and Node.js technologies.',
-        image: '/certificate-full-stack-development-with-mern.jpg',
-        verificationLink: null,
-        category: 'course',
-        skills: ['MongoDB', 'Express', 'React', 'Node.js', 'Full Stack', 'REST API'],
-      },
-      {
-        id: '3',
-        title: 'Frontend Developer - React',
-        issuer: 'Course Provider',
-        issueDate: '2024-11-01',
-        description: 'Completed frontend development specialization focusing on React.js, component architecture, and modern UI/UX practices.',
-        image: '/frontend_developer_react certificate-1.png',
-        verificationLink: null,
-        category: 'course',
-        skills: ['React', 'JavaScript', 'Frontend Development', 'UI/UX', 'Component Architecture'],
-      },
-      {
-        id: '4',
-        title: 'Canva for Presentations',
-        issuer: 'Canva',
-        issueDate: '2024-10-01',
-        description: 'Mastered Canva for creating professional presentations and visual designs.',
-        image: '/certificate-canva-for-presentations.jpg',
-        verificationLink: null,
-        category: 'certification',
-        skills: ['Canva', 'Design', 'Presentations', 'Visual Design'],
-      },
-      {
-        id: '5',
-        title: 'NextGen Hackathon Runner-up',
-        issuer: 'NextGen Hackathon',
-        issueDate: '2025-01-15',
-        description: 'Achieved runner-up position among 50+ teams (140+ participants) in a 24-hour national hackathon with "Upscale" career platform.',
-        image: '/upscale.png',
-        verificationLink: null,
-        category: 'hackathon',
-        skills: ['Next.js', 'TypeScript', 'MongoDB', 'AI Integration', 'Google Gemini'],
-      },
-      {
-        id: '6',
-        title: 'Intra Department Tech Hackathon Champion',
-        issuer: 'International Islamic University Chittagong',
-        issueDate: '2025-02-10',
-        description: 'Won first place with "FarmLink", a multi-role agricultural marketplace featuring real-time features and admin analytics.',
-        image: '/krishi.png',
-        verificationLink: null,
-        category: 'hackathon',
-        skills: ['Next.js', 'Node.js', 'MongoDB', 'Full Stack', 'Real-time Systems'],
-      },
-    ]
+  // Initialize certificates - add missing default certificates and remove duplicates
+  const defaultCertificates = [
+    {
+      id: '1',
+      title: 'NASA International Space Apps Challenge',
+      issuer: 'NASA',
+      issueDate: '2025-01-01',
+      description: 'Global nominee for developing a web tool leveraging NASA WorldPop data and OpenStreetMap to evaluate urban readiness.',
+      image: '/NASA Space Apps Challenge Certificate-1.png',
+      verificationLink: null,
+      category: 'hackathon',
+      skills: ['React', 'Leaflet', 'Data Analysis', 'OpenStreetMap', 'NASA WorldPop'],
+    },
+    {
+      id: '2',
+      title: 'Full Stack Development with MERN',
+      issuer: 'Course Provider',
+      issueDate: '2024-12-01',
+      description: 'Completed comprehensive full-stack development course covering MongoDB, Express, React, and Node.js technologies.',
+      image: '/certificate-full-stack-development-with-mern.jpg',
+      verificationLink: null,
+      category: 'course',
+      skills: ['MongoDB', 'Express', 'React', 'Node.js', 'Full Stack', 'REST API'],
+    },
+    {
+      id: '3',
+      title: 'Frontend Developer - React',
+      issuer: 'Course Provider',
+      issueDate: '2024-11-01',
+      description: 'Completed frontend development specialization focusing on React.js, component architecture, and modern UI/UX practices.',
+      image: '/frontend_developer_react certificate-1.png',
+      verificationLink: null,
+      category: 'course',
+      skills: ['React', 'JavaScript', 'Frontend Development', 'UI/UX', 'Component Architecture'],
+    },
+    {
+      id: '4',
+      title: 'Canva for Presentations',
+      issuer: 'Canva',
+      issueDate: '2024-10-01',
+      description: 'Mastered Canva for creating professional presentations and visual designs.',
+      image: '/certificate-canva-for-presentations.jpg',
+      verificationLink: null,
+      category: 'course',
+      skills: ['Canva', 'Design', 'Presentations', 'Visual Design'],
+    },
+    {
+      id: '5',
+      title: 'NextGen Hackathon Runner-up',
+      issuer: 'NextGen Hackathon',
+      issueDate: '2025-01-15',
+      description: 'Achieved runner-up position among 50+ teams (140+ participants) in a 24-hour national hackathon with "Upscale" career platform.',
+      image: '/upscale.png',
+      verificationLink: null,
+      category: 'hackathon',
+      skills: ['Next.js', 'TypeScript', 'MongoDB', 'AI Integration', 'Google Gemini'],
+    },
+    {
+      id: '6',
+      title: 'Intra Department Tech Hackathon Champion',
+      issuer: 'International Islamic University Chittagong',
+      issueDate: '2025-02-10',
+      description: 'Won first place with "FarmLink", a multi-role agricultural marketplace featuring real-time features and admin analytics.',
+      image: '/krishi.png',
+      verificationLink: null,
+      category: 'hackathon',
+      skills: ['Next.js', 'Node.js', 'MongoDB', 'Full Stack', 'Real-time Systems'],
+    },
+    {
+      id: '7',
+      title: 'Artificial Intelligence and Machine Learning Fundamentals',
+      issuer: 'Course Provider',
+      issueDate: '2024-09-01',
+      description: 'Completed comprehensive course covering the fundamentals of artificial intelligence and machine learning, including core concepts, algorithms, and practical applications.',
+      image: '/certificate-artificial-intelligence-and-machine-learning-fundamentals (1)-1.png',
+      verificationLink: null,
+      category: 'course',
+      skills: ['Artificial Intelligence', 'Machine Learning', 'Data Science', 'Algorithms', 'Python'],
+    },
+    {
+      id: '8',
+      title: 'Introduction to Data Science',
+      issuer: 'Course Provider',
+      issueDate: '2024-08-01',
+      description: 'Completed introductory course on data science covering data analysis, visualization, statistical methods, and data-driven decision making.',
+      image: '/IntrotoDataScienceUpdate20251029-31-ldb2xl-1.png',
+      verificationLink: null,
+      category: 'course',
+      skills: ['Data Science', 'Data Analysis', 'Statistics', 'Data Visualization', 'Python', 'Pandas'],
+    },
+  ]
+
+  const existingCertificates = getCertificates()
+  
+  if (existingCertificates.length === 0) {
+    // If no certificates exist, save all default certificates
     saveCertificates(defaultCertificates)
+  } else {
+    // Remove duplicates first
+    removeDuplicateCertificates()
+    const uniqueCertificates = getCertificates()
+    
+    // Update existing certificates with correct categories if they match default ones
+    let hasCategoryChanges = false
+    const updatedExisting = uniqueCertificates.map(cert => {
+      // Try to find matching default certificate by multiple criteria
+      const defaultCert = defaultCertificates.find(dc => {
+        // Match by ID
+        if (dc.id === cert.id) return true
+        // Match by exact image path
+        if (dc.image === cert.image) return true
+        // Match by normalized title
+        if (dc.title.toLowerCase().trim() === cert.title?.toLowerCase().trim()) return true
+        // Special case: match hackathon certificates by image and title keywords
+        if (dc.image === '/krishi.png' && cert.image === '/krishi.png' && 
+            (cert.title?.toLowerCase().includes('hackathon') || cert.title?.toLowerCase().includes('farmlink'))) return true
+        if (dc.image === '/upscale.png' && cert.image === '/upscale.png' && 
+            (cert.title?.toLowerCase().includes('hackathon') || cert.title?.toLowerCase().includes('nextgen'))) return true
+        return false
+      })
+      
+      if (defaultCert && cert.category !== defaultCert.category) {
+        // Update category from default if they match and category is different
+        hasCategoryChanges = true
+        return { ...cert, category: defaultCert.category }
+      }
+      return cert
+    })
+    
+    // Add missing default certificates (check by ID, image, and title)
+    const existingIds = new Set(updatedExisting.map(c => c.id))
+    const existingImages = new Set(updatedExisting.map(c => c.image?.toLowerCase()))
+    const existingTitles = new Set(updatedExisting.map(c => c.title?.toLowerCase().trim()))
+    
+    const missingCertificates = defaultCertificates.filter(cert => {
+      return (
+        !existingIds.has(cert.id) &&
+        !existingImages.has(cert.image?.toLowerCase()) &&
+        !existingTitles.has(cert.title?.toLowerCase().trim())
+      )
+    })
+    
+    // Save if there are missing certificates or category changes
+    if (missingCertificates.length > 0 || hasCategoryChanges) {
+      const finalCertificates = [...updatedExisting, ...missingCertificates]
+      saveCertificates(finalCertificates)
+    }
+  }
+
+  // Initialize achievements - add missing default achievements and remove duplicates
+  const defaultAchievements = [
+    {
+      id: '1',
+      type: 'education',
+      title: 'Bachelor of Science in Computer And Engineering',
+      company: 'International Islamic University Chittagong',
+      location: 'Chittagong, Bangladesh',
+      period: '2023 - Present',
+      description: [
+        'Undergoing undergraduate studies in Computer and Engineering',
+        'Relevant coursework: Data Structures, Algorithms, Web Development',
+      ],
+    },
+    {
+      id: '2',
+      type: 'hackathon',
+      title: 'NextGen Hackathon',
+      company: 'Team 3Zeros',
+      location: 'Chittagong, Bangladesh',
+      period: '2025',
+      description: [
+        'Runner-up among 50+ teams (140+ participants) in a 24-hour national hackathon.',
+        'Architected "Upscale", an AI-powered career platform integrating Gemini 2.0 and Vapi Voice AI under strict deadlines.',
+      ],
+    },
+    {
+      id: '3',
+      type: 'hackathon',
+      title: 'Intra Department Tech Hackathon',
+      company: 'International Islamic University Chittagong',
+      location: 'Chittagong, Bangladesh',
+      period: '2025',
+      description: [
+        'Champion with "FarmLink", a multi-role agricultural marketplace.',
+        'Delivered full-stack architecture with a price freshness algorithm and role-based access control.',
+      ],
+    },
+    {
+      id: '4',
+      type: 'hackathon',
+      title: 'NASA International Space Apps Challenge',
+      company: 'Hylsha Hyperdrive',
+      location: 'Global Nominee',
+      period: '2025',
+      description: [
+        'Developed a web tool leveraging NASA WorldPop data and OpenStreetMap to evaluate urban readiness.',
+        'Helped planners and policymakers make data-driven infrastructure, health, and sustainability decisions with Earth observation data.',
+      ],
+    },
+  ]
+
+  const existingAchievements = getAchievements()
+  
+  if (existingAchievements.length === 0) {
+    // If no achievements exist, save all default achievements
+    saveAchievements(defaultAchievements)
+  } else {
+    // Remove duplicates first
+    removeDuplicateAchievements()
+    const uniqueAchievements = getAchievements()
+    
+    // Update existing achievements with correct types if they match default ones
+    let hasTypeChanges = false
+    const updatedExisting = uniqueAchievements.map(achievement => {
+      // Try to find matching default achievement by multiple criteria
+      const defaultAchievement = defaultAchievements.find(da => {
+        // Match by ID
+        if (da.id === achievement.id) return true
+        // Match by title and company
+        if (da.title.toLowerCase().trim() === achievement.title?.toLowerCase().trim() &&
+            da.company.toLowerCase().trim() === achievement.company?.toLowerCase().trim()) return true
+        // Match by title and period
+        if (da.title.toLowerCase().trim() === achievement.title?.toLowerCase().trim() &&
+            da.period.toLowerCase().trim() === achievement.period?.toLowerCase().trim()) return true
+        return false
+      })
+      
+      if (defaultAchievement && achievement.type !== defaultAchievement.type) {
+        // Update type from default if they match and type is different
+        hasTypeChanges = true
+        return { ...achievement, type: defaultAchievement.type }
+      }
+      return achievement
+    })
+    
+    // Add missing default achievements (check by ID, title+company, and title+period)
+    const existingIds = new Set(updatedExisting.map(a => a.id))
+    const existingTitleCompany = new Set(
+      updatedExisting.map(a => `${a.title?.toLowerCase().trim()}_${a.company?.toLowerCase().trim()}`)
+    )
+    const existingTitlePeriod = new Set(
+      updatedExisting.map(a => `${a.title?.toLowerCase().trim()}_${a.period?.toLowerCase().trim()}`)
+    )
+    
+    const missingAchievements = defaultAchievements.filter(achievement => {
+      const titleCompanyKey = `${achievement.title.toLowerCase().trim()}_${achievement.company.toLowerCase().trim()}`
+      const titlePeriodKey = `${achievement.title.toLowerCase().trim()}_${achievement.period.toLowerCase().trim()}`
+      
+      return (
+        !existingIds.has(achievement.id) &&
+        !existingTitleCompany.has(titleCompanyKey) &&
+        !existingTitlePeriod.has(titlePeriodKey)
+      )
+    })
+    
+    // Save if there are missing achievements or type changes
+    if (missingAchievements.length > 0 || hasTypeChanges) {
+      const finalAchievements = [...updatedExisting, ...missingAchievements]
+      saveAchievements(finalAchievements)
+    }
   }
 }
 

@@ -1,138 +1,182 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa'
-import { getProjects } from '../utils/dataManager'
+import React, { useState, useEffect } from "react";
+import Tilt from "react-parallax-tilt";
+import { motion } from "framer-motion";
 
-const Projects = () => {
-  const [projects, setProjects] = useState([])
+import { styles } from "../styles";
+import { github } from "../assets";
+import { SectionWrapper } from "../hoc";
+import { fadeIn, textVariant } from "../utils/motion";
+import { getProjects } from "../utils/dataManager";
 
-  useEffect(() => {
-    // Load projects from localStorage
-    const data = getProjects()
-    setProjects(data)
-  }, [])
-
-  // Listen for storage changes to update projects when admin makes changes
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const data = getProjects()
-      setProjects(data)
-    }
-
-    window.addEventListener('storage', handleStorageChange)
-    // Also check periodically (for same-tab updates)
-    const interval = setInterval(() => {
-      const data = getProjects()
-      if (JSON.stringify(data) !== JSON.stringify(projects)) {
-        setProjects(data)
-      }
-    }, 1000)
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange)
-      clearInterval(interval)
-    }
-  }, [projects])
+const ProjectCard = ({
+  index,
+  name,
+  description,
+  tags,
+  image,
+  source_code_link,
+  demo_link,
+}) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   return (
-    <section id="projects" className="section py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Featured <span className="gradient-text">Projects</span>
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#e94560] to-transparent mx-auto"></div>
-          <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
-            A collection of projects I've worked on, showcasing my skills and
-            creativity
-          </p>
-        </motion.div>
+    <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)}>
+      <Tilt
+        tiltMaxAngleX={45}
+        tiltMaxAngleY={45}
+        scale={1.02}
+        transitionSpeed={450}
+        className='bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full shadow-card hover:shadow-xl transition-shadow duration-300'
+      >
+        <div className='relative w-full h-[230px] overflow-hidden rounded-2xl'>
+          {!imageLoaded && !imageError && (
+            <div className='absolute inset-0 bg-gradient-to-br from-[#915EFF] to-[#bf61ff] animate-pulse flex items-center justify-center'>
+              <div className='w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin'></div>
+            </div>
+          )}
+          <img
+            src={image}
+            alt={name}
+            className={`w-full h-full object-cover rounded-2xl transition-opacity duration-300 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            onLoad={() => setImageLoaded(true)}
+            onError={(e) => {
+              setImageError(true);
+              e.target.style.display = 'none';
+            }}
+            loading="lazy"
+          />
+          {imageError && (
+            <div className='absolute inset-0 bg-gradient-to-br from-[#915EFF] to-[#bf61ff] flex items-center justify-center'>
+              <span className='text-white text-2xl'>🚀</span>
+            </div>
+          )}
 
-        {projects.length > 0 ? (
-          <div className="grid md:grid-cols-2 gap-8">
-            {projects.map((project, index) => (
-            <motion.div
-              key={project.id || project.title}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ y: -10 }}
-              className="glass rounded-2xl overflow-hidden group cursor-pointer"
-            >
-              {/* Project Image */}
-              <div className="relative h-64 bg-gradient-to-br from-[#e94560] to-[#0f3460] overflow-hidden">
+          <div className='absolute inset-0 flex justify-end m-3 card-img_hover opacity-0 hover:opacity-100 transition-opacity duration-300'>
+            {source_code_link && (
+              <div
+                onClick={() => window.open(source_code_link, "_blank")}
+                className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer hover:scale-110 transition-transform duration-300'
+                aria-label="View source code"
+              >
                 <img
-                  src={project.image}
-                  alt={project.title}
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  onError={(e) => {
-                    // Fallback to gradient if image fails to load
-                    e.target.style.display = 'none'
-                    e.target.parentElement.style.background = 'linear-gradient(135deg, #e94560 0%, #0f3460 100%)'
-                  }}
+                  src={github}
+                  alt='source code'
+                  className='w-1/2 h-1/2 object-contain'
                 />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
-                <div className="absolute bottom-4 left-4 right-4 flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 bg-white/20 backdrop-blur-md rounded-lg hover:bg-[#e94560] transition-colors"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <FaGithub size={20} />
-                  </a>
-                  <a
-                    href={project.demo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 bg-white/20 backdrop-blur-md rounded-lg hover:bg-[#e94560] transition-colors"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <FaExternalLinkAlt size={20} />
-                  </a>
-                </div>
               </div>
+            )}
+            {demo_link && (
+              <div
+                onClick={() => window.open(demo_link, "_blank")}
+                className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer ml-2 hover:scale-110 transition-transform duration-300'
+                aria-label="View live demo"
+              >
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  fill="white"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M1 11L11 1M11 1H1M11 1V11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+            )}
+          </div>
+        </div>
 
-              {/* Project Content */}
-              <div className="p-6">
-                <h3 className="text-2xl font-semibold mb-3 gradient-text">
-                  {project.title}
-                </h3>
-                <p className="text-gray-400 mb-4 leading-relaxed">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 bg-[#e94560]/20 text-[#e94560] rounded-full text-sm"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-400 text-lg">No projects available at the moment.</p>
-          </div>
-        )}
+        <div className='mt-5'>
+          <h3 className='text-white font-bold text-[24px]'>{name}</h3>
+          <p className='mt-2 text-secondary text-[14px]'>{description}</p>
+        </div>
+
+        <div className='mt-4 flex flex-wrap gap-2'>
+          {tags.map((tag) => (
+            <p
+              key={`${name}-${tag}`}
+              className={`text-[14px] ${
+                index % 4 === 0 ? "blue-text-gradient" :
+                index % 4 === 1 ? "green-text-gradient" :
+                index % 4 === 2 ? "pink-text-gradient" :
+                "orange-text-gradient"
+              }`}
+            >
+              #{tag}
+            </p>
+          ))}
+        </div>
+      </Tilt>
+    </motion.div>
+  );
+};
+
+const Works = () => {
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    const data = getProjects();
+    setProjects(data);
+  }, []);
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const data = getProjects();
+      setProjects(data);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    const interval = setInterval(() => {
+      const data = getProjects();
+      if (JSON.stringify(data) !== JSON.stringify(projects)) {
+        setProjects(data);
+      }
+    }, 1000);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [projects]);
+
+  return (
+    <>
+      <motion.div variants={textVariant()}>
+        <p className={`${styles.sectionSubText} `}>My work</p>
+        <h2 className={`${styles.sectionHeadText}`}>Projects.</h2>
+      </motion.div>
+
+      <div className='w-full flex'>
+        <motion.p
+          variants={fadeIn("", "", 0.1, 1)}
+          className='mt-3 text-secondary text-[17px] max-w-3xl leading-[30px]'
+        >
+          Following projects showcases my skills and experience through
+          real-world examples of my work. Each project is briefly described with
+          links to code repositories and live demos in it. It reflects my
+          ability to solve complex problems, work with different technologies,
+          and manage projects effectively.
+        </motion.p>
       </div>
-    </section>
-  )
-}
 
-export default Projects
+      <div className='mt-20 flex flex-wrap gap-7'>
+        {projects.map((project, index) => (
+          <ProjectCard
+            key={`project-${project.id || index}`}
+            index={index}
+            name={project.title}
+            description={project.description}
+            tags={project.tags || []}
+            image={project.image}
+            source_code_link={project.github}
+            demo_link={project.demo}
+          />
+        ))}
+      </div>
+    </>
+  );
+};
 
+export default SectionWrapper(Works, "projects");
