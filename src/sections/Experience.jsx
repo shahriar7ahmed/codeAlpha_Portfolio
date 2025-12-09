@@ -30,20 +30,26 @@ const ExperienceCard = ({ experience, index }) => {
       contentStyle={{
         background: "#1d1836",
         color: "#fff",
-        transition: "all 0.3s ease-in-out",
+        transition: "transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+        transform: "translateZ(0)",
+        willChange: "transform",
+        backfaceVisibility: "hidden",
       }}
       contentArrowStyle={{ borderRight: "7px solid  #232631" }}
       date={experience.period}
       iconStyle={{ 
         background: getIconBg(experience.type || "work"),
-        transition: "all 0.3s ease-in-out",
+        transition: "transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+        transform: "translateZ(0)",
+        willChange: "transform",
       }}
       icon={
         <div className='flex justify-center items-center w-full h-full text-2xl'>
           {getIcon(experience.type || "work")}
         </div>
       }
-      className="hover:scale-105 transition-transform duration-300"
+      className=""
+      style={{ transform: "translateZ(0)" }}
     >
       <div>
         <h3 className='text-white text-[24px] font-bold'>{experience.title}</h3>

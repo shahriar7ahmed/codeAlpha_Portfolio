@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 import Navbar from "./components/Navbar";
 import Hero from "./sections/Hero";
@@ -39,12 +40,30 @@ function App() {
 
   if (isLoading) {
     return (
-      <div className="fixed inset-0 bg-primary flex items-center justify-center z-50">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-secondary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-xl font-semibold text-white">Loading...</p>
-        </div>
-      </div>
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="fixed inset-0 bg-primary flex items-center justify-center z-50"
+        >
+          <div className="text-center">
+            <span className="canvas-loader mx-auto block mb-8"></span>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              style={{
+                fontSize: 14,
+                color: "#F1F1F1",
+                fontWeight: 800,
+              }}
+            >
+              Loading...
+            </motion.p>
+          </div>
+        </motion.div>
+      </AnimatePresence>
     );
   }
 
@@ -61,7 +80,8 @@ function App() {
     <BrowserRouter>
       <ErrorBoundary>
         <div className="relative z-0 bg-primary">
-          <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
+          <StarsCanvas />
+          <div className="relative z-0">
             <Navbar />
             <Hero />
           </div>
@@ -72,7 +92,6 @@ function App() {
           <Certificates />
           <div className="relative z-0 min-h-screen">
             <Contact />
-            <StarsCanvas />
           </div>
           <Footer />
           <ScrollToTop />

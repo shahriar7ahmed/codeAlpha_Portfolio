@@ -189,8 +189,10 @@ body {
   border-radius: 50%;
   position: relative;
   text-indent: -9999em;
-  animation: mulShdSpin 1.1s infinite ease;
+  animation: mulShdSpin 1.1s infinite cubic-bezier(0.4, 0, 0.6, 1);
   transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 @keyframes mulShdSpin {
@@ -271,17 +273,21 @@ body {
 
 /* Project card hover effects */
 .card-img_hover {
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: opacity;
 }
 
 .card-img_hover > div {
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 /* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 100px;
 }
 
 /* Performance optimizations */
@@ -292,8 +298,12 @@ html {
 
 /* Improve animation performance */
 .motion-div,
-[class*="motion"] {
+[class*="motion"],
+[data-framer-component] {
   will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: subpixel-antialiased;
 }
 
 /* Better focus styles for accessibility */
@@ -305,11 +315,14 @@ html {
 
 /* Vertical Timeline Customization */
 .vertical-timeline-element-content {
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out !important;
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .vertical-timeline-element-content:hover {
-  transform: translateY(-5px);
+  transform: translateY(-5px) translateZ(0);
   box-shadow: 0 10px 30px rgba(145, 94, 255, 0.3) !important;
 }
 
@@ -342,7 +355,13 @@ html {
 
 /* Smooth transitions for all interactive elements */
 button, a, input, textarea, select {
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Only use CSS transitions for hover states, not initial animations */
+button:hover, a:hover {
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 /* Loading skeleton animation */
@@ -358,6 +377,22 @@ button, a, input, textarea, select {
 .skeleton {
   background: linear-gradient(90deg, #1d1836 0px, #2a2442 40px, #1d1836 80px);
   background-size: 200px 100%;
-  animation: skeleton-loading 1.5s ease-in-out infinite;
+  animation: skeleton-loading 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  will-change: background-position;
+}
+
+/* Hardware acceleration for animated elements */
+*[class*="hover:scale"],
+*[class*="hover:translate"],
+*[class*="transition-transform"] {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimize card animations */
+[class*="card"],
+[class*="Card"] {
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 

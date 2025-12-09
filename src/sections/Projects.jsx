@@ -27,7 +27,13 @@ const ProjectCard = ({
         tiltMaxAngleY={45}
         scale={1.02}
         transitionSpeed={450}
-        className='bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full shadow-card hover:shadow-xl transition-shadow duration-300'
+        className='bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full shadow-card'
+        style={{ 
+          willChange: "transform, box-shadow",
+          transition: "box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"}
+        onMouseLeave={(e) => e.currentTarget.style.boxShadow = ""}
       >
         <div className='relative w-full h-[230px] overflow-hidden rounded-2xl'>
           {!imageLoaded && !imageError && (
@@ -38,9 +44,13 @@ const ProjectCard = ({
           <img
             src={image}
             alt={name}
-            className={`w-full h-full object-cover rounded-2xl transition-opacity duration-300 ${
+            className={`w-full h-full object-cover rounded-2xl ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
+            style={{ 
+              transition: "opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+              transform: "translateZ(0)"
+            }}
             onLoad={() => setImageLoaded(true)}
             onError={(e) => {
               setImageError(true);
@@ -54,11 +64,26 @@ const ProjectCard = ({
             </div>
           )}
 
-          <div className='absolute inset-0 flex justify-end m-3 card-img_hover opacity-0 hover:opacity-100 transition-opacity duration-300'>
+          <div 
+            className='absolute inset-0 flex justify-end m-3 card-img_hover opacity-0'
+            style={{ 
+              transition: "opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+              willChange: "opacity"
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
+            onMouseLeave={(e) => e.currentTarget.style.opacity = "0"}
+          >
             {source_code_link && (
               <div
                 onClick={() => window.open(source_code_link, "_blank")}
-                className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer hover:scale-110 transition-transform duration-300'
+                className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer'
+                style={{ 
+                  transition: "transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                  transform: "translateZ(0)",
+                  willChange: "transform"
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.1) translateZ(0)"}
+                onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1) translateZ(0)"}
                 aria-label="View source code"
               >
                 <img
@@ -71,7 +96,14 @@ const ProjectCard = ({
             {demo_link && (
               <div
                 onClick={() => window.open(demo_link, "_blank")}
-                className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer ml-2 hover:scale-110 transition-transform duration-300'
+                className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer ml-2'
+                style={{ 
+                  transition: "transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                  transform: "translateZ(0)",
+                  willChange: "transform"
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.1) translateZ(0)"}
+                onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1) translateZ(0)"}
                 aria-label="View live demo"
               >
                 <svg

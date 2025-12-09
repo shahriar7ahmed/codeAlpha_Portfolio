@@ -18,7 +18,13 @@ const CertificateCard = ({ index, certificate }) => {
         tiltMaxAngleY={45}
         scale={1.02}
         transitionSpeed={450}
-        className='bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full min-h-[500px] flex flex-col shadow-card hover:shadow-xl transition-shadow duration-300'
+        className='bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full min-h-[500px] flex flex-col shadow-card'
+        style={{ 
+          willChange: "transform, box-shadow",
+          transition: "box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"}
+        onMouseLeave={(e) => e.currentTarget.style.boxShadow = ""}
       >
         <div className='relative w-full h-[230px] mb-4 overflow-hidden rounded-2xl'>
           {!imageLoaded && !imageError && (
@@ -29,9 +35,13 @@ const CertificateCard = ({ index, certificate }) => {
           <img
             src={certificate.image}
             alt={certificate.title}
-            className={`w-full h-full object-cover rounded-2xl transition-opacity duration-300 ${
+            className={`w-full h-full object-cover rounded-2xl ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
+            style={{ 
+              transition: "opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+              transform: "translateZ(0)"
+            }}
             onLoad={() => setImageLoaded(true)}
             onError={(e) => {
               setImageError(true);

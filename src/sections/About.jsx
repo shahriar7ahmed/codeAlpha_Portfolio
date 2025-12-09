@@ -17,15 +17,23 @@ const ServiceCard = ({ index, title, icon }) => (
       tiltMaxAngleY={45}
       scale={1.05}
       transitionSpeed={450}
-      className='w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card hover:shadow-xl transition-shadow duration-300'
+      className='w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card hover:shadow-xl'
+      style={{ willChange: "transform" }}
     >
       <div
-        className='bg-tertiary rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col hover:bg-[#1a1530] transition-colors duration-300'
+        className='bg-tertiary rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col'
+        style={{ transition: "background-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}
       >
         <img
           src={icon}
           alt={title}
-          className='w-16 h-16 object-contain transition-transform duration-300 hover:scale-110'
+          className='w-16 h-16 object-contain'
+          style={{ 
+            transition: "transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+            transform: "translateZ(0)"
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.1) translateZ(0)"}
+          onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1) translateZ(0)"}
         />
 
         <h3 className='text-white text-[20px] font-bold text-center'>

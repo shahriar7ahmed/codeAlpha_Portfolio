@@ -144,9 +144,19 @@ const Contact = () => {
               value={form.name}
               onChange={handleChange}
               placeholder="What's your good name?"
-              className={`bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium transition-all duration-300 ${
-                errors.name ? 'ring-2 ring-red-500' : 'focus:ring-2 focus:ring-[#915EFF]'
+              className={`bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium ${
+                errors.name ? 'ring-2 ring-red-500' : ''
               }`}
+              style={{ 
+                transition: "ring 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                willChange: "ring"
+              }}
+              onFocus={(e) => {
+                if (!errors.name) e.currentTarget.style.boxShadow = "0 0 0 2px #915EFF";
+              }}
+              onBlur={(e) => {
+                if (!errors.name) e.currentTarget.style.boxShadow = "";
+              }}
               aria-invalid={errors.name ? 'true' : 'false'}
               aria-describedby={errors.name ? 'name-error' : undefined}
             />
@@ -170,9 +180,19 @@ const Contact = () => {
               value={form.email}
               onChange={handleChange}
               placeholder="What's your web address?"
-              className={`bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium transition-all duration-300 ${
-                errors.email ? 'ring-2 ring-red-500' : 'focus:ring-2 focus:ring-[#915EFF]'
+              className={`bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium ${
+                errors.email ? 'ring-2 ring-red-500' : ''
               }`}
+              style={{ 
+                transition: "ring 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                willChange: "ring"
+              }}
+              onFocus={(e) => {
+                if (!errors.email) e.currentTarget.style.boxShadow = "0 0 0 2px #915EFF";
+              }}
+              onBlur={(e) => {
+                if (!errors.email) e.currentTarget.style.boxShadow = "";
+              }}
               aria-invalid={errors.email ? 'true' : 'false'}
               aria-describedby={errors.email ? 'email-error' : undefined}
             />
@@ -196,9 +216,19 @@ const Contact = () => {
               value={form.message}
               onChange={handleChange}
               placeholder='What you want to say?'
-              className={`bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium resize-none transition-all duration-300 ${
-                errors.message ? 'ring-2 ring-red-500' : 'focus:ring-2 focus:ring-[#915EFF]'
+              className={`bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium resize-none ${
+                errors.message ? 'ring-2 ring-red-500' : ''
               }`}
+              style={{ 
+                transition: "ring 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                willChange: "ring"
+              }}
+              onFocus={(e) => {
+                if (!errors.message) e.currentTarget.style.boxShadow = "0 0 0 2px #915EFF";
+              }}
+              onBlur={(e) => {
+                if (!errors.message) e.currentTarget.style.boxShadow = "";
+              }}
               aria-invalid={errors.message ? 'true' : 'false'}
               aria-describedby={errors.message ? 'message-error' : undefined}
             />
@@ -249,7 +279,22 @@ const Contact = () => {
           <button
             type='submit'
             disabled={loading}
-            className='bg-tertiary py-3 px-8 rounded-xl outline-none w-fit text-white font-bold shadow-md shadow-primary hover:shadow-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100'
+            className='bg-tertiary py-3 px-8 rounded-xl outline-none w-fit text-white font-bold shadow-md shadow-primary disabled:opacity-50 disabled:cursor-not-allowed'
+            style={{ 
+              transition: "box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+              transform: "translateZ(0)",
+              willChange: "transform, box-shadow"
+            }}
+            onMouseEnter={(e) => {
+              if (!e.currentTarget.disabled) {
+                e.currentTarget.style.boxShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)";
+                e.currentTarget.style.transform = "scale(1.05) translateZ(0)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = "";
+              e.currentTarget.style.transform = "scale(1) translateZ(0)";
+            }}
           >
             {loading ? (
               <span className="flex items-center gap-2">
