@@ -14,12 +14,16 @@ import Footer from "./sections/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Admin from "./pages/Admin";
-import { StarsCanvas } from "./components/canvas";
+import { StarsCanvas, GestureParticleSystem } from "./components/canvas";
+import GestureControlPanel from "./components/GestureControls/GestureControlPanel";
 import { initializeDefaultData } from "./utils/dataManager";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [particleTemplate, setParticleTemplate] = useState('stars');
+  const [particleColor, setParticleColor] = useState('#f272c8');
+  const [particleScale, setParticleScale] = useState(1.0);
 
   useEffect(() => {
     // Check if we're on admin route
@@ -80,8 +84,21 @@ function App() {
     <BrowserRouter>
       <ErrorBoundary>
         <div className="relative z-0 bg-primary">
-          <StarsCanvas />
+          <GestureParticleSystem
+            template={particleTemplate}
+            color={particleColor}
+            scale={particleScale}
+            particleCount={typeof window !== 'undefined' && window.innerWidth < 768 ? 3000 : 5000}
+          />
           <Navbar />
+          <GestureControlPanel
+            template={particleTemplate}
+            onTemplateChange={setParticleTemplate}
+            color={particleColor}
+            onColorChange={setParticleColor}
+            scale={particleScale}
+            onScaleChange={setParticleScale}
+          />
           <div className="pt-20">
             <Hero />
             <About />
