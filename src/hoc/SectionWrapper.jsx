@@ -13,16 +13,12 @@ const StarWrapper = (Component, idName) =>
         viewport={{ once: true, amount: 0.15 }}
         className={`${styles.padding} max-w-7xl mx-auto relative z-0`}
         style={{ 
-          willChange: "transform, opacity",
-          scrollMarginTop: "100px"
+          willChange: "transform, opacity"
         }}
       >
         <span 
           className='hash-span' 
-          id={idName} 
-          style={{ 
-            scrollMarginTop: "120px"
-          }}
+          id={idName}
           aria-hidden="true"
         >
           &nbsp;

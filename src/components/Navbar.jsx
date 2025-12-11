@@ -94,7 +94,7 @@ const Navbar = () => {
     <>
       {/* Scroll Progress Indicator */}
       <div
-        className="fixed top-0 left-0 h-1 bg-[#915EFF]/30 z-[9997] transition-opacity duration-300"
+        className="sticky top-0 left-0 h-1 bg-[#915EFF]/30 z-[999] transition-opacity duration-300"
         style={{ 
           width: `${scrollProgress}%`,
           opacity: scrollProgress > 5 ? 1 : 0,
@@ -114,7 +114,7 @@ const Navbar = () => {
         aria-label="Main navigation"
         className={`${
           styles.paddingX
-        } w-full flex items-center py-5 fixed top-0 z-[9999] ${
+        } w-full flex items-center py-5 sticky top-0 z-[1000] ${
           scrolled ? "bg-primary backdrop-blur-sm bg-opacity-90" : "bg-transparent"
         }`}
         style={{ 
@@ -122,7 +122,7 @@ const Navbar = () => {
           willChange: "background-color"
         }}
       >
-      <div className='w-full flex justify-between items-center max-w-7xl mx-auto'>
+      <div className='w-full flex justify-between items-center max-w-7xl mx-auto relative'>
         <Link
           to='/'
           className='flex items-center gap-2'
@@ -138,7 +138,7 @@ const Navbar = () => {
           </p>
         </Link>
 
-        <ul className='list-none hidden sm:flex flex-row gap-10' role="menubar">
+        <ul className='list-none hidden sm:flex flex-row flex-wrap gap-10' role="menubar">
           {navLinks.map((nav) => (
             <li
               key={nav.id}
@@ -157,9 +157,9 @@ const Navbar = () => {
                   e.preventDefault();
                   const element = document.getElementById(nav.id);
                   if (element) {
-                    // Responsive offset: larger on desktop, smaller on mobile
+                    // Responsive offset: account for navbar height
                     const isMobile = window.innerWidth < 640;
-                    const offset = isMobile ? 100 : 120;
+                    const offset = isMobile ? 80 : 100;
                     const elementPosition = element.getBoundingClientRect().top;
                     const offsetPosition = elementPosition + window.pageYOffset - offset;
                     window.scrollTo({
@@ -185,7 +185,7 @@ const Navbar = () => {
             aria-label={toggle ? "Close menu" : "Open menu"}
             aria-expanded={toggle}
             aria-controls="mobile-menu"
-            className='w-[28px] h-[28px] flex items-center justify-center cursor-pointer z-[10000] relative focus:outline-none focus:ring-2 focus:ring-[#915EFF] focus:ring-offset-2 focus:ring-offset-primary rounded'
+            className='w-[28px] h-[28px] flex items-center justify-center cursor-pointer z-[1001] relative focus:outline-none focus:ring-2 focus:ring-[#915EFF] focus:ring-offset-2 focus:ring-offset-primary rounded'
             onClick={() => setToggle(!toggle)}
             whileTap={{ scale: 0.9 }}
             transition={{ duration: 0.2 }}
@@ -205,7 +205,7 @@ const Navbar = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9998]"
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[999]"
                 onClick={() => setToggle(false)}
               />
             )}
@@ -227,7 +227,7 @@ const Navbar = () => {
                   stiffness: 200,
                   ease: [0.25, 0.46, 0.45, 0.94]
                 }}
-                className='fixed top-0 right-0 h-full w-64 p-6 black-gradient z-[9999] shadow-2xl overflow-y-auto'
+                className='absolute top-full right-0 w-64 p-6 black-gradient z-[1000] shadow-2xl overflow-y-auto max-h-[calc(100vh-80px)]'
               >
                 <ul className='list-none flex flex-col gap-6 mt-20' role="menubar">
                   {navLinks.map((nav, index) => (
@@ -252,7 +252,7 @@ const Navbar = () => {
                           const element = document.getElementById(nav.id);
                           if (element) {
                             const isMobile = window.innerWidth < 640;
-                            const offset = isMobile ? 100 : 120;
+                            const offset = isMobile ? 80 : 100;
                             const elementPosition = element.getBoundingClientRect().top;
                             const offsetPosition = elementPosition + window.pageYOffset - offset;
                             window.scrollTo({
@@ -279,7 +279,7 @@ const Navbar = () => {
                             const element = document.getElementById(nav.id);
                             if (element) {
                               const isMobile = window.innerWidth < 640;
-                              const offset = isMobile ? 100 : 120;
+                              const offset = isMobile ? 80 : 100;
                               const elementPosition = element.getBoundingClientRect().top;
                               const offsetPosition = elementPosition + window.pageYOffset - offset;
                               window.scrollTo({

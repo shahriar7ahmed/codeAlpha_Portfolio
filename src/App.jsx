@@ -81,16 +81,14 @@ function App() {
       <ErrorBoundary>
         <div className="relative z-0 bg-primary">
           <StarsCanvas />
-          <div className="relative z-0">
-            <Navbar />
+          <Navbar />
+          <div className="pt-20">
             <Hero />
-          </div>
-          <About />
-          <Tech />
-          <Experience />
-          <Projects />
-          <Certificates />
-          <div className="relative z-0 min-h-screen">
+            <About />
+            <Tech />
+            <Experience />
+            <Projects />
+            <Certificates />
             <Contact />
           </div>
           <Footer />
