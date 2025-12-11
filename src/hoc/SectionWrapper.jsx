@@ -12,9 +12,19 @@ const StarWrapper = (Component, idName) =>
         whileInView='show'
         viewport={{ once: true, amount: 0.15 }}
         className={`${styles.padding} max-w-7xl mx-auto relative z-0`}
-        style={{ willChange: "transform, opacity" }}
+        style={{ 
+          willChange: "transform, opacity",
+          scrollMarginTop: "100px"
+        }}
       >
-        <span className='hash-span' id={idName}>
+        <span 
+          className='hash-span' 
+          id={idName} 
+          style={{ 
+            scrollMarginTop: "120px"
+          }}
+          aria-hidden="true"
+        >
           &nbsp;
         </span>
 

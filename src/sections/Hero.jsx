@@ -5,7 +5,7 @@ import { textVariant } from "../utils/motion";
 
 const Hero = () => {
   return (
-    <section className={`relative w-full h-screen mx-auto flex items-center justify-center overflow-hidden`}>
+    <section className={`relative w-full h-screen mx-auto flex items-center justify-center overflow-hidden pt-20 sm:pt-0`}>
       <div
         className={`relative max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-center gap-8 sm:gap-12`}
       >

@@ -57,7 +57,7 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close menu when clicking outside
+  // Close menu when clicking outside or pressing Escape
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target) && toggle) {
@@ -65,8 +65,17 @@ const Navbar = () => {
       }
     };
 
+    const handleEscape = (event) => {
+      if (event.key === 'Escape' && toggle) {
+        setToggle(false);
+      }
+    };
+
     if (toggle) {
+      // Support both mouse and touch events
       document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleClickOutside);
+      document.addEventListener("keydown", handleEscape);
       // Prevent body scroll when menu is open
       document.body.style.overflow = "hidden";
     } else {
@@ -75,6 +84,8 @@ const Navbar = () => {
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
       document.body.style.overflow = "unset";
     };
   }, [toggle]);
@@ -83,7 +94,7 @@ const Navbar = () => {
     <>
       {/* Scroll Progress Indicator */}
       <div
-        className="fixed top-0 left-0 h-1 bg-[#915EFF]/30 z-[90] transition-opacity duration-300"
+        className="fixed top-0 left-0 h-1 bg-[#915EFF]/30 z-[9997] transition-opacity duration-300"
         style={{ 
           width: `${scrollProgress}%`,
           opacity: scrollProgress > 5 ? 1 : 0,
@@ -99,15 +110,16 @@ const Navbar = () => {
       </div>
 
       <nav
+        role="navigation"
+        aria-label="Main navigation"
         className={`${
           styles.paddingX
-        } w-full flex items-center py-5 fixed top-0 z-[100] ${
+        } w-full flex items-center py-5 fixed top-0 z-[9999] ${
           scrolled ? "bg-primary backdrop-blur-sm bg-opacity-90" : "bg-transparent"
         }`}
         style={{ 
           transition: "background-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), backdrop-filter 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-          willChange: "background-color",
-          top: scrollProgress > 5 ? "4px" : "0px"
+          willChange: "background-color"
         }}
       >
       <div className='w-full flex justify-between items-center max-w-7xl mx-auto'>
@@ -126,10 +138,11 @@ const Navbar = () => {
           </p>
         </Link>
 
-        <ul className='list-none hidden sm:flex flex-row gap-10'>
+        <ul className='list-none hidden sm:flex flex-row gap-10' role="menubar">
           {navLinks.map((nav) => (
             <li
               key={nav.id}
+              role="none"
               className={`${
                 active === nav.title ? "text-white" : "text-secondary"
               } hover:text-white text-[18px] font-medium cursor-pointer transition-colors duration-300 relative`}
@@ -137,11 +150,29 @@ const Navbar = () => {
             >
               <a 
                 href={`#${nav.id}`}
-                className="relative"
+                role="menuitem"
+                aria-current={active === nav.title ? "page" : undefined}
+                className="relative focus:outline-none focus:ring-2 focus:ring-[#915EFF] focus:ring-offset-2 focus:ring-offset-primary rounded px-2 py-1"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const element = document.getElementById(nav.id);
+                  if (element) {
+                    // Responsive offset: larger on desktop, smaller on mobile
+                    const isMobile = window.innerWidth < 640;
+                    const offset = isMobile ? 100 : 120;
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - offset;
+                    window.scrollTo({
+                      top: offsetPosition,
+                      behavior: 'smooth'
+                    });
+                  }
+                  setActive(nav.title);
+                }}
               >
                 {nav.title}
                 {active === nav.title && (
-                  <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-[#915EFF]"></span>
+                  <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-[#915EFF]" aria-hidden="true"></span>
                 )}
               </a>
             </li>
@@ -149,14 +180,22 @@ const Navbar = () => {
         </ul>
 
         <div className='sm:hidden flex flex-1 justify-end items-center' ref={menuRef}>
-          <motion.img
-            src={toggle ? close : menu}
-            alt='menu'
-            className='w-[28px] h-[28px] object-contain cursor-pointer z-30 relative'
+          <motion.button
+            type="button"
+            aria-label={toggle ? "Close menu" : "Open menu"}
+            aria-expanded={toggle}
+            aria-controls="mobile-menu"
+            className='w-[28px] h-[28px] flex items-center justify-center cursor-pointer z-[10000] relative focus:outline-none focus:ring-2 focus:ring-[#915EFF] focus:ring-offset-2 focus:ring-offset-primary rounded'
             onClick={() => setToggle(!toggle)}
             whileTap={{ scale: 0.9 }}
             transition={{ duration: 0.2 }}
-          />
+          >
+            <img
+              src={toggle ? close : menu}
+              alt={toggle ? 'Close menu' : 'Open menu'}
+              className='w-full h-full object-contain'
+            />
+          </motion.button>
 
           {/* Backdrop */}
           <AnimatePresence>
@@ -166,7 +205,7 @@ const Navbar = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[95]"
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9998]"
                 onClick={() => setToggle(false)}
               />
             )}
@@ -176,6 +215,9 @@ const Navbar = () => {
           <AnimatePresence>
             {toggle && (
               <motion.div
+                id="mobile-menu"
+                role="menu"
+                aria-label="Mobile navigation menu"
                 initial={{ x: "100%", opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: "100%", opacity: 0 }}
@@ -185,12 +227,13 @@ const Navbar = () => {
                   stiffness: 200,
                   ease: [0.25, 0.46, 0.45, 0.94]
                 }}
-                className='fixed top-0 right-0 h-full w-64 p-6 black-gradient z-[100] shadow-2xl'
+                className='fixed top-0 right-0 h-full w-64 p-6 black-gradient z-[9999] shadow-2xl overflow-y-auto'
               >
-                <ul className='list-none flex flex-col gap-6 mt-20'>
+                <ul className='list-none flex flex-col gap-6 mt-20' role="menubar">
                   {navLinks.map((nav, index) => (
                     <motion.li
                       key={nav.id}
+                      role="none"
                       initial={{ x: 50, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
                       transition={{ 
@@ -204,13 +247,53 @@ const Navbar = () => {
                       onClick={() => {
                         setToggle(false);
                         setActive(nav.title);
+                        // Smooth scroll to section with responsive offset
+                        setTimeout(() => {
+                          const element = document.getElementById(nav.id);
+                          if (element) {
+                            const isMobile = window.innerWidth < 640;
+                            const offset = isMobile ? 100 : 120;
+                            const elementPosition = element.getBoundingClientRect().top;
+                            const offsetPosition = elementPosition + window.pageYOffset - offset;
+                            window.scrollTo({
+                              top: offsetPosition,
+                              behavior: 'smooth'
+                            });
+                          }
+                        }, 100);
                       }}
                       whileHover={{ x: 10, color: "#fff" }}
                       style={{ transition: "color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}
                     >
-                      <a href={`#${nav.id}`} className="flex items-center gap-2">
+                      <a 
+                        href={`#${nav.id}`} 
+                        role="menuitem"
+                        aria-current={active === nav.title ? "page" : undefined}
+                        className="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-[#915EFF] focus:ring-offset-2 focus:ring-offset-black-100 rounded px-2 py-1"
+                        onClick={(e) => {
+                          e.preventDefault();
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            const element = document.getElementById(nav.id);
+                            if (element) {
+                              const isMobile = window.innerWidth < 640;
+                              const offset = isMobile ? 100 : 120;
+                              const elementPosition = element.getBoundingClientRect().top;
+                              const offsetPosition = elementPosition + window.pageYOffset - offset;
+                              window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth'
+                              });
+                              setToggle(false);
+                              setActive(nav.title);
+                            }
+                          }
+                        }}
+                      >
                         {active === nav.title && (
-                          <span className="w-2 h-2 rounded-full bg-[#915EFF]"></span>
+                          <span className="w-2 h-2 rounded-full bg-[#915EFF]" aria-hidden="true"></span>
                         )}
                         {nav.title}
                       </a>
