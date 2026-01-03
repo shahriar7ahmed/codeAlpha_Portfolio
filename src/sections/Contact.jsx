@@ -48,7 +48,7 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     // Validation
     const newErrors = {};
     if (!form.name.trim()) {
@@ -126,10 +126,10 @@ const Contact = () => {
     >
       <motion.div
         variants={slideIn("left", "tween", 0.2, 1)}
-        className='flex-[0.75] bg-black-100 p-8 rounded-2xl relative z-0'
+        className='flex-[0.75] glass-card p-10 rounded-3xl relative z-0 shadow-modern-lg'
       >
         <p className={styles.sectionSubText}>Get in touch</p>
-        <h3 className={styles.sectionHeadText}>Contact.</h3>
+        <h3 className={styles.sectionHeadText}>Contact</h3>
 
         <form
           ref={formRef}
@@ -143,11 +143,10 @@ const Contact = () => {
               name='name'
               value={form.name}
               onChange={handleChange}
-              placeholder="What's your good name?"
-              className={`bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium ${
-                errors.name ? 'ring-2 ring-red-500' : ''
-              }`}
-              style={{ 
+              placeholder="Your Name"
+              className={`bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium ${errors.name ? 'ring-2 ring-red-500' : ''
+                }`}
+              style={{
                 transition: "ring 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
                 willChange: "ring"
               }}
@@ -179,11 +178,10 @@ const Contact = () => {
               name='email'
               value={form.email}
               onChange={handleChange}
-              placeholder="What's your web address?"
-              className={`bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium ${
-                errors.email ? 'ring-2 ring-red-500' : ''
-              }`}
-              style={{ 
+              placeholder="Your Email"
+              className={`bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium ${errors.email ? 'ring-2 ring-red-500' : ''
+                }`}
+              style={{
                 transition: "ring 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
                 willChange: "ring"
               }}
@@ -215,11 +213,10 @@ const Contact = () => {
               name='message'
               value={form.message}
               onChange={handleChange}
-              placeholder='What you want to say?'
-              className={`bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium resize-none ${
-                errors.message ? 'ring-2 ring-red-500' : ''
-              }`}
-              style={{ 
+              placeholder='Your Message'
+              className={`bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium resize-none ${errors.message ? 'ring-2 ring-red-500' : ''
+                }`}
+              style={{
                 transition: "ring 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
                 willChange: "ring"
               }}
@@ -246,9 +243,8 @@ const Contact = () => {
               ) : (
                 <span></span>
               )}
-              <span className={`text-xs ${
-                form.message.length > 1000 ? 'text-red-400' : 'text-secondary'
-              }`}>
+              <span className={`text-xs ${form.message.length > 1000 ? 'text-red-400' : 'text-secondary'
+                }`}>
                 {form.message.length}/1000
               </span>
             </div>
@@ -279,13 +275,13 @@ const Contact = () => {
           <motion.button
             type='submit'
             disabled={loading}
-            className='relative bg-tertiary py-3 px-8 rounded-xl outline-none w-fit text-white font-bold shadow-md shadow-primary disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden'
-            style={{ 
+            className='btn-modern gradient-purple-soft text-white font-bold shadow-glow-purple disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto overflow-hidden'
+            style={{
               transition: "box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
               transform: "translateZ(0)",
               willChange: "transform, box-shadow"
             }}
-            whileHover={!loading ? { 
+            whileHover={!loading ? {
               scale: 1.05,
               boxShadow: "0 10px 25px rgba(145, 94, 255, 0.4)"
             } : {}}
@@ -309,7 +305,7 @@ const Contact = () => {
                 const size = Math.max(rect.width, rect.height);
                 const x = e.clientX - rect.left - size / 2;
                 const y = e.clientY - rect.top - size / 2;
-                
+
                 ripple.style.width = ripple.style.height = size + 'px';
                 ripple.style.left = x + 'px';
                 ripple.style.top = y + 'px';
@@ -319,7 +315,7 @@ const Contact = () => {
                 ripple.style.transform = 'scale(0)';
                 ripple.style.animation = 'ripple 0.6s ease-out';
                 ripple.style.pointerEvents = 'none';
-                
+
                 button.appendChild(ripple);
                 setTimeout(() => ripple.remove(), 600);
               }

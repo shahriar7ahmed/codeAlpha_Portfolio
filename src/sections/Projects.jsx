@@ -36,7 +36,7 @@ const ProjectCard = ({
   return (
     <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)}>
       <motion.div
-        whileHover={{ 
+        whileHover={{
           y: -8,
           transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }
         }}
@@ -46,8 +46,8 @@ const ProjectCard = ({
           tiltMaxAngleY={45}
           scale={1.03}
           transitionSpeed={450}
-          className='bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full shadow-card cursor-pointer'
-          style={{ 
+          className='glass-card p-6 rounded-3xl sm:w-[360px] w-full cursor-pointer card-modern shadow-modern-lg'
+          style={{
             willChange: "transform, box-shadow",
             transition: "box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)"
           }}
@@ -61,112 +61,110 @@ const ProjectCard = ({
           }}
           onClick={handleCardClick}
         >
-        <div className='relative w-full h-[230px] overflow-hidden rounded-2xl'>
-          {!imageLoaded && !imageError && (
-            <div className='absolute inset-0 bg-gradient-to-br from-[#915EFF] to-[#bf61ff] animate-pulse flex items-center justify-center'>
-              <div className='w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin'></div>
-            </div>
-          )}
-          <img
-            src={image}
-            alt={name}
-            className={`w-full h-full object-cover rounded-2xl ${
-              imageLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{ 
-              transition: "opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-              transform: "translateZ(0)"
-            }}
-            onLoad={() => setImageLoaded(true)}
-            onError={(e) => {
-              setImageError(true);
-              e.target.style.display = 'none';
-            }}
-            loading="lazy"
-          />
-          {imageError && (
-            <div className='absolute inset-0 bg-gradient-to-br from-[#915EFF] to-[#bf61ff] flex items-center justify-center'>
-              <span className='text-white text-2xl'>🚀</span>
-            </div>
-          )}
-
-          <div 
-            className='absolute inset-0 flex justify-end m-3 card-img_hover opacity-0'
-            style={{ 
-              transition: "opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-              willChange: "opacity"
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
-            onMouseLeave={(e) => e.currentTarget.style.opacity = "0"}
-          >
-            {source_code_link && (
-              <div
-                onClick={() => window.open(source_code_link, "_blank")}
-                className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer'
-                style={{ 
-                  transition: "transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                  transform: "translateZ(0)",
-                  willChange: "transform"
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.1) translateZ(0)"}
-                onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1) translateZ(0)"}
-                aria-label="View source code"
-              >
-                <img
-                  src={github}
-                  alt='source code'
-                  className='w-1/2 h-1/2 object-contain'
-                />
+          <div className='relative w-full h-[230px] overflow-hidden rounded-2xl'>
+            {!imageLoaded && !imageError && (
+              <div className='absolute inset-0 bg-gradient-to-br from-[#915EFF] to-[#bf61ff] animate-pulse flex items-center justify-center'>
+                <div className='w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin'></div>
               </div>
             )}
-            {demo_link && (
-              <div
-                onClick={() => window.open(demo_link, "_blank")}
-                className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer ml-2'
-                style={{ 
-                  transition: "transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                  transform: "translateZ(0)",
-                  willChange: "transform"
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.1) translateZ(0)"}
-                onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1) translateZ(0)"}
-                aria-label="View live demo"
-              >
-                <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 12 12"
-                  fill="white"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M1 11L11 1M11 1H1M11 1V11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
+            <img
+              src={image}
+              alt={name}
+              className={`w-full h-full object-cover rounded-2xl ${imageLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
+              style={{
+                transition: "opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                transform: "translateZ(0)"
+              }}
+              onLoad={() => setImageLoaded(true)}
+              onError={(e) => {
+                setImageError(true);
+                e.target.style.display = 'none';
+              }}
+              loading="lazy"
+            />
+            {imageError && (
+              <div className='absolute inset-0 bg-gradient-to-br from-[#915EFF] to-[#bf61ff] flex items-center justify-center'>
+                <span className='text-white text-2xl'>🚀</span>
               </div>
             )}
-          </div>
-        </div>
 
-        <div className='mt-5'>
-          <h3 className='text-white font-bold text-[24px]'>{name}</h3>
-          <p className='mt-2 text-secondary text-[14px]'>{description}</p>
-        </div>
-
-        <div className='mt-4 flex flex-wrap gap-2'>
-          {tags.map((tag) => (
-            <p
-              key={`${name}-${tag}`}
-              className={`text-[14px] ${
-                index % 4 === 0 ? "blue-text-gradient" :
-                index % 4 === 1 ? "green-text-gradient" :
-                index % 4 === 2 ? "pink-text-gradient" :
-                "orange-text-gradient"
-              }`}
+            <div
+              className='absolute inset-0 flex justify-end m-3 card-img_hover opacity-0'
+              style={{
+                transition: "opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                willChange: "opacity"
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
+              onMouseLeave={(e) => e.currentTarget.style.opacity = "0"}
             >
-              #{tag}
-            </p>
-          ))}
-        </div>
-      </Tilt>
+              {source_code_link && (
+                <div
+                  onClick={() => window.open(source_code_link, "_blank")}
+                  className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer'
+                  style={{
+                    transition: "transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                    transform: "translateZ(0)",
+                    willChange: "transform"
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.1) translateZ(0)"}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1) translateZ(0)"}
+                  aria-label="View source code"
+                >
+                  <img
+                    src={github}
+                    alt='source code'
+                    className='w-1/2 h-1/2 object-contain'
+                  />
+                </div>
+              )}
+              {demo_link && (
+                <div
+                  onClick={() => window.open(demo_link, "_blank")}
+                  className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer ml-2'
+                  style={{
+                    transition: "transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                    transform: "translateZ(0)",
+                    willChange: "transform"
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.1) translateZ(0)"}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1) translateZ(0)"}
+                  aria-label="View live demo"
+                >
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    fill="white"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M1 11L11 1M11 1H1M11 1V11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className='mt-5'>
+            <h3 className='text-white font-bold text-[24px]'>{name}</h3>
+            <p className='mt-2 text-secondary text-[14px]'>{description}</p>
+          </div>
+
+          <div className='mt-4 flex flex-wrap gap-2'>
+            {tags.map((tag) => (
+              <p
+                key={`${name}-${tag}`}
+                className={`text-[14px] ${index % 4 === 0 ? "blue-text-gradient" :
+                  index % 4 === 1 ? "green-text-gradient" :
+                    index % 4 === 2 ? "pink-text-gradient" :
+                      "orange-text-gradient"
+                  }`}
+              >
+                #{tag}
+              </p>
+            ))}
+          </div>
+        </Tilt>
       </motion.div>
     </motion.div>
   );
@@ -216,7 +214,7 @@ const Works = () => {
     <>
       <motion.div variants={textVariant()}>
         <p className={`${styles.sectionSubText} `}>My work</p>
-        <h2 className={`${styles.sectionHeadText}`}>Projects.</h2>
+        <h2 className={`${styles.sectionHeadText}`}>Projects</h2>
       </motion.div>
 
       <div className='w-full flex'>

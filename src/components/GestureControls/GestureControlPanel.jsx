@@ -108,6 +108,20 @@ const GestureControlPanel = ({
                 {/* Color Picker */}
                 <ColorPicker color={color} onChange={onColorChange} label="Particle Color" />
 
+                {/* How to Use Instructions */}
+                <div className="bg-[#915EFF]/10 border border-[#915EFF]/30 rounded-lg p-4 space-y-2">
+                  <h3 className="text-[#915EFF] text-sm font-bold flex items-center gap-2">
+                    <FaHandPaper />
+                    How to Use Hand Gestures
+                  </h3>
+                  <ul className="text-white/70 text-xs space-y-1 list-disc list-inside">
+                    <li>Click "Enable" below to activate your webcam</li>
+                    <li>Show both hands to the camera</li>
+                    <li>Spread hands apart to increase particle scale</li>
+                    <li>Bring hands together to decrease scale</li>
+                  </ul>
+                </div>
+
                 {/* Gesture Control Toggle */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -115,13 +129,12 @@ const GestureControlPanel = ({
                     <button
                       onClick={handleToggleGesture}
                       disabled={isLoading}
-                      className={`px-4 py-2 rounded-lg transition-colors flex items-center gap-2 ${
-                        enableGesture && isTracking
+                      className={`px-4 py-2 rounded-lg transition-colors flex items-center gap-2 ${enableGesture && isTracking
                           ? 'bg-green-500/20 text-green-400 border border-green-500/50'
                           : isLoading
-                          ? 'bg-gray-500/20 text-gray-400 border border-gray-500/50 cursor-not-allowed'
-                          : 'bg-black-100/50 text-white/70 border border-white/10 hover:border-[#915EFF]/50'
-                      }`}
+                            ? 'bg-gray-500/20 text-gray-400 border border-gray-500/50 cursor-not-allowed'
+                            : 'bg-black-100/50 text-white/70 border border-white/10 hover:border-[#915EFF]/50'
+                        }`}
                     >
                       {isLoading ? (
                         <>
