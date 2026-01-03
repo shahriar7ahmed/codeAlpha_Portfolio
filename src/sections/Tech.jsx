@@ -12,10 +12,10 @@ const Tech = () => {
     <>
       <motion.div variants={textVariant()}>
         <p className={styles.sectionSubText}>What I know</p>
-        <h2 className={styles.sectionHeadText}>Technologies.</h2>
+        <h2 className={styles.sectionHeadText}>Skills</h2>
       </motion.div>
 
-      <motion.div 
+      <motion.div
         variants={fadeIn("", "", 0.1, 1)}
         className='mt-20 flex flex-row flex-wrap justify-center gap-10'
       >

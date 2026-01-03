@@ -40,7 +40,7 @@ const ExperienceCard = ({ experience, index, onCardClick }) => {
       }}
       contentArrowStyle={{ borderRight: "7px solid  #232631" }}
       date={experience.period}
-      iconStyle={{ 
+      iconStyle={{
         background: getIconBg(experience.type || "work"),
         transition: "transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
         transform: "translateZ(0)",
@@ -55,7 +55,7 @@ const ExperienceCard = ({ experience, index, onCardClick }) => {
       className="cursor-pointer"
       style={{ transform: "translateZ(0)" }}
     >
-      <div 
+      <div
         onClick={() => onCardClick && onCardClick()}
         className="p-6 hover:bg-black-100/50 transition-colors duration-300 rounded-lg"
       >
@@ -147,7 +147,7 @@ const Experience = () => {
           What I have done so far
         </p>
         <h2 className={`${styles.sectionHeadText} text-center`}>
-          Work Experience.
+          Experience
         </h2>
       </motion.div>
 

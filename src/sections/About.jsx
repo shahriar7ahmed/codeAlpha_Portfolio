@@ -13,22 +13,22 @@ const ServiceCard = ({ index, title, icon }) => (
     className='xs:w-[250px] w-full'
   >
     <Tilt
-      tiltMaxAngleX={45}
-      tiltMaxAngleY={45}
-      scale={1.05}
-      transitionSpeed={450}
-      className='w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card hover:shadow-xl'
-      style={{ willChange: "transform" }}
+      options={{
+        max: 45,
+        scale: 1,
+        speed: 450,
+      }}
+      className='glass-card p-6 rounded-3xl sm:w-[250px] w-full card-modern shadow-modern'
     >
       <div
-        className='bg-tertiary rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col'
+        className='min-h-[280px] flex justify-evenly items-center flex-col'
         style={{ transition: "background-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}
       >
         <img
           src={icon}
           alt={title}
           className='w-16 h-16 object-contain'
-          style={{ 
+          style={{
             transition: "transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
             transform: "translateZ(0)"
           }}
@@ -49,18 +49,16 @@ const About = () => {
     <>
       <motion.div variants={textVariant()}>
         <p className={styles.sectionSubText}>Introduction</p>
-        <h2 className={styles.sectionHeadText}>Overview.</h2>
+        <h2 className={styles.sectionHeadText}>Overview</h2>
       </motion.div>
 
       <motion.p
         variants={fadeIn("", "", 0.1, 1)}
         className='mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]'
       >
-        I'm a passionate full-stack developer with expertise in modern web technologies 
-        including React, Node.js, and TypeScript. I love creating innovative digital solutions 
-        and transforming ideas into beautiful, functional applications. I'm a quick learner 
-        and collaborate closely with clients to create efficient, scalable, and user-friendly 
-        solutions that solve real-world problems. Let's work together to bring your ideas to life!
+        I'm a passionate full-stack developer specializing in React, Node.js, and TypeScript.
+        I design and build scalable web applications, reliable APIs, and end-to-end digital products
+        that transform ideas into functional, user-friendly solutions.
       </motion.p>
 
       <div className='mt-20 flex flex-wrap gap-10'>
