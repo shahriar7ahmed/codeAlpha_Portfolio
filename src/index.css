@@ -474,11 +474,11 @@ body {
 
 @keyframes shimmer {
   0% {
-    background-position: -1000px 0;
+    transform: translateX(-100%);
   }
 
   100% {
-    background-position: 1000px 0;
+    transform: translateX(100%);
   }
 }
 
@@ -496,6 +496,10 @@ body {
 
 .animate-scale-in {
   animation: scaleIn 0.6s ease-out;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
 }
 
 /* ==================== SCROLLBAR ==================== */
