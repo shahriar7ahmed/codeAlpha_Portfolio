@@ -52,6 +52,7 @@ export default {
         sans: ['Inter', 'Plus Jakarta Sans', 'system-ui', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
         jakarta: ['Plus Jakarta Sans', 'sans-serif'],
+        bangla: ['Hind Siliguri', 'Inter', 'sans-serif'],
       },
       boxShadow: {
         'premium-sm': '0 2px 8px rgba(0, 0, 0, 0.08)',
