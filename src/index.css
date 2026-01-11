@@ -919,3 +919,54 @@ a:hover {
   transition: transform var(--transition-base);
   will-change: transform;
 }
+/* Enhanced text contrast utilities */
+.text-secondary-enhanced {
+  color: #E5E7EB;
+}
+
+.text-tertiary-enhanced {
+  color: #D1D5DB;
+}
+
+/* Bangla text styling */
+.text-bangla {
+  font-family: 'Hind Siliguri', 'Inter', sans-serif;
+  line-height: 1.8;
+}
+
+/* Poetry specific styles */
+.poetry-text {
+  font-family: 'Hind Siliguri', 'Inter', sans-serif;
+  line-height: 2;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Blog text styles */
+.blog-content {
+  line-height: 1.75;
+}
+
+.blog-content-bangla {
+  font-family: 'Hind Siliguri', 'Inter', sans-serif;
+  line-height: 1.9;
+}
+
+/* Language badge styles */
+.badge-bangla {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-english {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
